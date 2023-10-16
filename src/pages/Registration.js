@@ -44,6 +44,7 @@ function Registration(){
     };
 
     return (
+        <main className="main-content">
         <div className="centerContainer">
             <h2>Registration</h2>
             {error && <span className="spanred" >Error: {error}</span>}
@@ -74,6 +75,7 @@ function Registration(){
                 </Form>
             </Formik>
         </div>
+        </main>
     )
     
 }
