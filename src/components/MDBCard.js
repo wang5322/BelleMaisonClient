@@ -96,7 +96,9 @@ const Card = ({
             </span>
             {/* <p>{features}</p> */}
           </div>
-          <Button onClick={() => handleNavigate(id)}>View</Button>
+          <Button variant="dark" onClick={() => handleNavigate(id)}>
+            View
+          </Button>
           {page === "broker" && (
             <Button
               variant="dark"
