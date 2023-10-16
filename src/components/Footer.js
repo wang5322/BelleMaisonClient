@@ -38,10 +38,9 @@ export default function AppFooter(){
                 <Col>
                     <div>
                         <h4>Contact Us:</h4>
-                        <Row>
-                            <Col>Email: <p><MailOutlineIcon/> BelleMaison@gmail.com</p></Col>
-                            <Col>Phone:<p><PhoneIcon/> +1 (514) 567-9876</p></Col>
-                        </Row>
+                            <div>Email: <p><MailOutlineIcon/> BelleMaison@gmail.com</p></div>
+                            <div>Phone:<p><PhoneIcon/> +1 (514) 567-9876</p></div>
+
                     </div>
                 </Col>
                 <Col>

@@ -46,6 +46,7 @@ function Login() {
   };
 
   return (
+    <main className="main-content">
     <div className="centerContainer">
       <h2>Login</h2>
       {/* <div className="formContainer">
@@ -81,7 +82,9 @@ function Login() {
           <button type="submit">Login</button>
         </Form>
       </Formik>
+      
     </div>
+    </main>
   );
 }
 
