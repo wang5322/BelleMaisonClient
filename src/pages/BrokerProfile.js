@@ -7,7 +7,6 @@ import "../css/main.css";
 import MDBCard from "../components/MDBCard";
 import CertiGallery from "../components/PropUpdateImageList";
 import * as Yup from "yup";
-// import { AuthContext } from "../helpers/AuthContext";
 
 function BrokerProfile() {
   //   const id = 15;
@@ -20,10 +19,6 @@ function BrokerProfile() {
   const [selectedImage, setSelectedImage] = useState(null);
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  //   const { authState } = useContext(AuthContext);
-  //   const id = authState.id;
-  //   console.log("id====", id);
-  //   console.log("authId====", authState.id);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -108,6 +103,7 @@ function BrokerProfile() {
           bathrooms={property.bathrooms}
           year_built={property.year_built}
           price={property.price}
+          page="broker"
           features={property.features}
         />
       );
@@ -145,15 +141,13 @@ function BrokerProfile() {
   };
   //Get broker info & properties info
   useEffect(() => {
-    console.log("======entered useEffect=========");
+    // console.log("======entered useEffect=========");
     Axios.get(`http://localhost:3005/api/users/byId`, {
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
     })
       .then((response) => {
-        // console.log("====entered response======");
-        console.log("user Info======", response.data);
         setBroker(response.data);
         setBrokerId(response.data.id);
 
@@ -172,9 +166,6 @@ function BrokerProfile() {
           // Update certificates state after the loop
           setCertificates(certificatePictures);
         }
-
-        console.log(certificates);
-        // console.log("profileInfo====", profile);
       })
       .catch((error) => {
         alert(error);

@@ -13,14 +13,15 @@ import BrokerProfile from "./pages/BrokerProfile";
 import AdminProperty from "./pages/AdminProperty";
 import AdminUser from "./pages/AdminUser";
 import Navbar2 from "./components/Navbar";
-import PageNotFound from './pages/PageNotFound';
+import PageNotFound from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext";
 import { useContext } from "react";
-import axios from 'axios';
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppFooter from './components/Footer';
+import AppFooter from "./components/Footer";
 
 import UpdateProperty from "./pages/UpdateProperty";
+import BrokerInfoPage from "./pages/BrokerInfoPage";
 
 function App() {
   const [authState, setAuthState] = useState({
@@ -38,25 +39,27 @@ function App() {
   //   // You can perform actions based on the new authState here
   // }, [authState]);
 
-  useEffect(()=>{
-    axios.get(`http://localhost:3005/api/users/auth`, {
-      headers: {
-        accessToken: localStorage.getItem("accessToken")
-      }
-    }).then((response)=>{
-      if(response.data.error){
-        setAuthState({...authState, status: false});
-      }else{
-        setAuthState({
-          email: response.data.email,
-          id: response.data.id,
-          role: response.data.role,
-          approval: response.data.broker_approval,
-          status: true,
-        });
-      }
-    });
-  },[]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3005/api/users/auth`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          setAuthState({ ...authState, status: false });
+        } else {
+          setAuthState({
+            email: response.data.email,
+            id: response.data.id,
+            role: response.data.role,
+            approval: response.data.broker_approval,
+            status: true,
+          });
+        }
+      });
+  }, []);
 
   return (
     <div className="app-container">
@@ -72,12 +75,17 @@ function App() {
             <Route path="/login" exact element={<Login />} />
             <Route path="/brokerList" exact element={<BrokerList />} />
             <Route path="/postProperty" exact element={<PostProperty />} />
-            <Route path="/updateProperty/:id" exact element={<UpdateProperty />} />
+            <Route
+              path="/updateProperty/:id"
+              exact
+              element={<UpdateProperty />}
+            />
             <Route path="/myProfile/user" exact element={<BuyerProfile />} />
             <Route path="/myProfile/broker" exact element={<BrokerProfile />} />
             <Route path="*" exact element={<PageNotFound />} />
             <Route path="/admin/users" exact element={<AdminUser />} />
             <Route path="/admin/properties" exact element={<AdminProperty />} />
+            <Route path="/broker/:id" exact element={<BrokerInfoPage />} />
           </Routes>
         </Router>
         <footer id="footer">
