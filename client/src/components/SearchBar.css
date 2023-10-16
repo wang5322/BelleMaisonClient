@@ -1,0 +1,72 @@
+.searchInputs{
+    margin-top: 50px;
+    display: flex;
+}
+
+.searchInputs input{
+    background-color: rgb(252, 250, 236);
+    border: 0;
+    border-radius: 2px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    font-size: 18px;
+    padding: 15px;
+    height: 60px;
+    width: 300px;
+}
+
+.searchIcon{
+    height: 60px;
+    width: 50px;
+    background-color: rgb(91, 86, 160);
+    display: grid;
+    place-items: center;
+}
+
+input:focus{
+    outline: none;
+}
+.searshIcon svg{
+    font-size: 35px;
+}
+
+.dataResult {
+     margin-top: 5px;
+     width: 300px; 
+    height: 200px;
+     background-color: rgb(175, 184, 236);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: hidden;
+    overflow-y: auto; 
+  }
+
+  .dataResult::-webkit-scrollbar {
+    display: none;
+  }
+  .dataResult .dataItem {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: left;
+    color: black;
+  }
+
+  .dataItem p{
+    padding-left: 10px;
+  }
+
+  .dataItem p:hover{
+    cursor: pointer;
+  }
+ a{
+    text-decoration: none;
+    padding-left: 15px;
+ }
+
+  a:hover {
+    background-color: lightgrey;
+  }
+
+#clearBtn{
+    cursor: pointer;
+}

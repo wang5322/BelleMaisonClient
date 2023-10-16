@@ -1,0 +1,76 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
+.property{
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.SingleProperty {
+  height: 80vh;
+  width: 80vw;
+}
+
+.map-container {
+  height: 50%;
+  width: 50%;
+  padding: 35px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.Calculator{
+  padding: 35px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 10px; border-radius: 10px;
+  justify-content: space-between;
+}
+.property-detail-content{
+  background: white;
+}
+.property-detail-title{
+  font-weight: bold;
+}
+.address{
+  margin: 0;
+}
+.address i{
+  margin-right: 5px;
+}
+.fd-top{
+  display: flex;
+  padding: 35px;
+  justify-content: space-between;
+}
+.price{
+  font-weight: bold;
+  font-size: 40px;
+}
+.item .fas{
+  color:#364465
+}
+.property-item{
+  background: white;
+  padding: 35px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.property-item h4{
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.property-detail .col-lg-4 span{
+  font-weight: 500;
+ }
+
+.likeBttn {
+  color: rgba(246, 14, 14, 0.8);
+}
+.unlikeBttn {
+  color: rgb(0, 0, 0);
+}

@@ -1,0 +1,51 @@
+.centerContainer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+    height: auto;
+    padding: 20px;
+    border: 5px solid dodgerblue;
+    border-radius: 5px;
+}
+
+
+.inputCreatePost {
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 20px;
+  }
+  
+  .formContainer button {
+    margin-top: 15px;
+    height: 40px;
+    border: none;
+    background-color: lightskyblue;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .formContainer button:hover {
+    cursor: pointer;
+    background-color: dodgerblue;
+}
+
+.regRadio{
+  margin: 15px;
+}
+
+.spanred {
+    color: red;
+} 

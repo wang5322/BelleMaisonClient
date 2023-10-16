@@ -1,0 +1,44 @@
+.userProfile{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  border: 5px solid round #ededed;
+  box-shadow:0 4px 8px 0 rgba(0,0,0,0.2) ;
+  border-radius: 5px;
+}
+.userPanel{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+  height: auto;
+  margin-left: 50px;
+  padding: 20px;
+ 
+  border: 2px solid #ededed;
+  box-shadow:0 4px 8px 0 rgba(0,0,0,0.2) ;
+  border-radius: 5px;
+}
+.userPanel button{
+  margin: 15px;
+  height: 40px;
+  border: none;
+  background-color: lightskyblue;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.listFavorite{
+  border: 2px solid #ededed;
+  box-shadow:0 4px 8px 0 rgba(0,0,0,0.2) ;
+  border-radius: 5px;
+  width: 80%;
+  margin-left: 50px;
+  padding: 20px;
+  
+}
