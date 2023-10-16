@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 function AdminUser() {
   const [userList, setUserList] = useState([]);
   const [brokerApproval, setBrokerApproval] = useState(0);
+  const [activeUser, setActiveUser]=useState(1);
   useEffect(() => {
     axios
       .get("http://localhost:3005/api/users")
@@ -27,7 +28,7 @@ function AdminUser() {
   const approve = (userid) => {
     axios
       .patch(
-        `http://localhost:3005/api/users/admin/update/${userid}`,
+        `http://localhost:3005/api/users/admin/update`,
         { id: userid, broker_approval: 1 },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
@@ -44,6 +45,26 @@ function AdminUser() {
         alert("error in approving user");
       });
   };
+  const deactive = (userid) => {
+    axios
+      .patch(
+        `http://localhost:3005/api/users/admin/update`,
+        { id: userid, is_active: 0 },
+        { headers: { accessToken: localStorage.getItem("accessToken") } }
+      )
+      .then((res) => {
+        if (res.data.error) {
+          alert("error in approving user");
+          return;
+        }
+        console.log(res);
+        setActiveUser(activeUser + 1);
+        alert("user is deactived");
+      })
+      .catch((err) => {
+        alert("error in deactive user");
+      });
+  }
   return (
     <div className="adminTable">
       <Row>
@@ -96,7 +117,9 @@ function AdminUser() {
                 </td>
                 {/* <td><Button variant="outline-warning">Approve</Button></td> */}
                 <td>
-                  <Button variant="outline-danger">Delete</Button>
+                  <Button variant="outline-danger" onClick={()=>{
+                    deactive(value.id);
+                  }}>Deactive</Button>
                 </td>
               </tr>
             );
