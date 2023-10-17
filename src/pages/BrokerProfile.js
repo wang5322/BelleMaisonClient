@@ -48,11 +48,12 @@ function BrokerProfile() {
       if (isCertificate) {
         formData.append("isCertificate", isCertificate);
       }
-      Axios.post("http://localhost:3005/api/pictures", formData, {
+      Axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then((response) => {
           console.log("pictureId", response.data.id);
+          window.location.reload();
         })
         .catch((error) => {
           if (error.response.data.message) {
@@ -64,7 +65,7 @@ function BrokerProfile() {
           }
         });
       setFiles([]);
-      window.location.reload();
+      // window.location.reload();
     } else {
       console.log("No files selected");
     }
@@ -87,6 +88,7 @@ function BrokerProfile() {
           year_built={property.year_built}
           price={property.price}
           page="broker"
+          isActive={property.isActive}
           features={property.features}
         />
       );
@@ -125,7 +127,7 @@ function BrokerProfile() {
   const handleProfileShow = () => setProfileEdit(true);
 
   const deleteProfile = (profilId) => {
-    Axios.delete(`http://localhost:3005/api/pictures/${profilId}`)
+    Axios.delete(`${process.env.REACT_APP_HOST_URL}/api/pictures/${profilId}`)
       .then(() => {
         setProfile({});
       })
@@ -142,7 +144,7 @@ function BrokerProfile() {
   //Get broker info & properties info
   useEffect(() => {
     // console.log("======entered useEffect=========");
-    Axios.get(`http://localhost:3005/api/users/byId`, {
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/users/byId`, {
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -150,7 +152,6 @@ function BrokerProfile() {
       .then((response) => {
         setBroker(response.data);
         setBrokerId(response.data.id);
-
         const certificatePictures = [];
 
         //Seperate profile picture and certificate pictures
@@ -176,7 +177,7 @@ function BrokerProfile() {
         // }
       });
 
-    Axios.get(`http://localhost:3005/api/properties/byBroker`, {
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties/byBroker`, {
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -213,9 +214,13 @@ function BrokerProfile() {
     }),
     onSubmit: (values) => {
       try {
-        Axios.patch(`http://localhost:3005/api/users/byId/`, values, {
-          headers: { accessToken: localStorage.getItem("accessToken") },
-        }).then(() => {
+        Axios.patch(
+          `${process.env.REACT_APP_HOST_URL}/api/users/byId/`,
+          values,
+          {
+            headers: { accessToken: localStorage.getItem("accessToken") },
+          }
+        ).then(() => {
           alert("profile info updated");
         });
       } catch (error) {
@@ -235,6 +240,18 @@ function BrokerProfile() {
         {/* Profile info & profile picture section*/}
         <Row>
           <h1>Broker Profile</h1>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <span
+              style={{
+                color: broker.broker_approval === 1 ? "black" : "red",
+                textDecoration: "underline",
+              }}
+            >
+              {broker.broker_approval === 1
+                ? "Your account is approved"
+                : "Upload certificates to get approved"}
+            </span>
+          </div>
         </Row>
         <Card className="mt-4">
           <Form onSubmit={formik.handleSubmit}>
@@ -335,7 +352,7 @@ function BrokerProfile() {
                     {profile && Object.keys(profile).length !== 0 ? (
                       <Button
                         className="mt-3"
-                        variant="dark"
+                        variant="outline-danger"
                         onClick={() => {
                           deleteProfile(profile.id);
                         }}
@@ -357,10 +374,11 @@ function BrokerProfile() {
         {/* Certificate Section */}
         <Row className="certificate">
           <h2>Certificate</h2>
+          <h5>Upload your certificates to get approved</h5>
 
           <Form className="mb-3">
             <Form.Group>
-              <Form.Label>Upload certificates</Form.Label>
+              {/* <Form.Label>Upload certificates</Form.Label> */}
               <div className="d-flex">
                 {" "}
                 <div style={{ width: "600px" }}>
@@ -371,6 +389,7 @@ function BrokerProfile() {
                   ></Form.Control>
                 </div>
                 <Button
+                  variant="dark"
                   className="mx-2"
                   type="submit"
                   onClick={() => uploadFiles(1)}
@@ -392,9 +411,13 @@ function BrokerProfile() {
         <Row className="propertyList">
           <div className="mt-2">
             <h2>Properties posted</h2>
-            <div>
-              <Button variant="dark">Add porperty</Button>
-            </div>
+            {broker.broker_approval === 1 && (
+              <div>
+                <Button variant="dark" href="/postProperty">
+                  Add porperty
+                </Button>
+              </div>
+            )}
           </div>
           <div className="card-container">{displayProperties}</div>
 

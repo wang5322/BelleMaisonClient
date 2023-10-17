@@ -27,7 +27,7 @@ function BuyerProfile() {
   });
 
   const onSubmit = (data) => {
-    axios.patch(`http://localhost:3005/api/users/byId`, data,
+    axios.patch(`${process.env.REACT_APP_HOST_URL}/api/users/byId`, data,
     { 
       headers: { accessToken: localStorage.getItem("accessToken")}}
     ).then((res) =>{
@@ -39,7 +39,7 @@ function BuyerProfile() {
     if(!localStorage.getItem("accessToken")){
       navigate("/login")
     }else{
-      axios.get(`http://localhost:3005/api/users/byId`,
+      axios.get(`${process.env.REACT_APP_HOST_URL}/api/users/byId`,
       { headers: { accessToken: localStorage.getItem("accessToken") } }
     ).then((res) => {
       setUser(res.data);
@@ -51,7 +51,7 @@ function BuyerProfile() {
       });
     
     }
-     axios.get("http://localhost:3005/api/favorites",
+     axios.get(`${process.env.REACT_APP_HOST_URL}/api/favorites`,
      { headers: { accessToken: localStorage.getItem("accessToken") } }
      ).then((res)=>{
       setFavourites(res.data);

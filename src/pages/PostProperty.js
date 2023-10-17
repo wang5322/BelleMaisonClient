@@ -73,7 +73,7 @@ function PostProperty() {
 
       try {
         const response = await Axios.post(
-          "http://localhost:3005/api/properties",
+          `${process.env.REACT_APP_HOST_URL}/api/properties`,
           values,
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         );
@@ -81,7 +81,7 @@ function PostProperty() {
         const propertyId = response.data.id;
         formData.append("propertyId", propertyId);
 
-        await Axios.post("http://localhost:3005/api/pictures", formData, {
+        await Axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 

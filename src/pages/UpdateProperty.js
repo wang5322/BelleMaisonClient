@@ -78,7 +78,7 @@ function UpdateProperty() {
       // TODO: use update
       try {
         await Axios.put(
-          `http://localhost:3005/api/properties/byId/${id}`,
+          `${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`,
           values,
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         );
@@ -87,7 +87,7 @@ function UpdateProperty() {
           const propertyId = id;
           formData.append("propertyId", propertyId);
 
-          await Axios.post("http://localhost:3005/api/pictures", formData, {
+          await Axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
           });
 
@@ -107,7 +107,7 @@ function UpdateProperty() {
 
   useEffect(() => {
     console.log("=====Entered useEffect for update property====");
-    Axios.get(`http://localhost:3005/api/properties/byId/${id}`)
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`)
       .then((response) => {
         setProperty(response.data);
       })
@@ -118,7 +118,7 @@ function UpdateProperty() {
           alert(`There is an error occured while getting property ${id}`);
         }
       });
-    Axios.get(`http://localhost:3005/api/pictures/byProp/${id}`, {
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`, {
       headers: { accessToken: localStorage.getItem("accessToken") },
     })
       .then((response) => {

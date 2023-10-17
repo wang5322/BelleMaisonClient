@@ -16,7 +16,7 @@ function BrokerInfoPage() {
   //Get broker info & properties info
   useEffect(() => {
     // TODO:use id param
-    Axios.get(`http://localhost:3005/api/users/brokerInfo/${id}`, {
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/users/brokerInfo/${id}`, {
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -47,13 +47,34 @@ function BrokerInfoPage() {
         // }
       });
 
-    Axios.get(`http://localhost:3005/api/properties/byBroker`, {
-      headers: {
-        accessToken: localStorage.getItem("accessToken"),
-      },
-    })
+    // Axios.get(`http://localhost:3005/api/properties/byBroker`, {
+    //   headers: {
+    //     accessToken: localStorage.getItem("accessToken"),
+    //   },
+    // })
+    //   .then((response) => {
+    //     setProperties(response.data);
+    //   })
+    //   .catch((error) => {
+    //     alert(error);
+    //   });
+    let filteredProperties = [];
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties`)
       .then((response) => {
-        setProperties(response.data);
+        const numberId = parseInt(id, 10); // id that passed from params is a string
+        // Filter out elements where brokerId is not equal to id
+        filteredProperties = response.data.filter((property) => {
+          console.log(
+            "property.broker_id:",
+            property.broker_id,
+            typeof property.broker_id
+          );
+          console.log("id:", id, typeof id);
+          return property.broker_id === numberId;
+        });
+        // Now, filteredProperties contains only elements where brokerId === id
+        console.log("filteredProperties===", filteredProperties);
+        setProperties(filteredProperties);
       })
       .catch((error) => {
         alert(error);
@@ -115,7 +136,7 @@ function BrokerInfoPage() {
                 />
               </div>
             </Col>
-            <Col className="infor-right" md={8}>
+            <Col className="info-right" md={8}>
               <h2 className="mt-5">{broker.name}</h2>
               <hr></hr>
               <h4>{broker.phone}</h4>

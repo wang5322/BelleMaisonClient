@@ -22,7 +22,7 @@ function Login() {
   let navigate = useNavigate();
   const onSubmit = (data) => {
     axios
-      .post("http://localhost:3005/api/users/login", data)
+      .post(`${process.env.REACT_APP_HOST_URL}/api/users/login`, data)
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
