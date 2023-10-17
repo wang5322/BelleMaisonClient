@@ -124,6 +124,7 @@ function Home() {
 
     return (
         <>
+        <main className="main-content">
             <div>
                 <div className='p-5 text-center bg-image'
                     style={{ backgroundImage: "url('https://mdbootstrap.com/img/new/slides/041.webp')",
@@ -167,6 +168,7 @@ function Home() {
                     />
                 </div>
             </div>
+            </main>
         </>
     )
 }
