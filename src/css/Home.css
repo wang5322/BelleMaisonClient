@@ -4,7 +4,9 @@
     background-size: cover;
 }
 
-
+.mask{
+  height: 300px;
+}
 
 .paginationBttns {
     width: 80%;
@@ -37,4 +39,8 @@
   .paginationDisabled a {
     color: rgb(78, 74, 74);
     background-color: rgb(167, 160, 160);
+  }
+
+  .info{
+    margin-left: 145px;
   }

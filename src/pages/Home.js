@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
-import './Home.css';
+import '../css/Home.css';
 import axios from "axios";
 import Card from "../components/MDBCard";
 import ReactPaginate from 'react-paginate';
@@ -14,12 +14,12 @@ function Home() {
     const [listOfProperties, setListOfProperties] = useState([initValue]);
     const [pageNumber, setPageNumber] = useState(0);
     const [city, setCity] = useState();
+    const [searchCriteria , setSearchCriteria] = useState({});
+
     const articlesPerPage = 5;
     const propertiesVisited = pageNumber * articlesPerPage;
 
     
-
-    const pageCount = Math.ceil(listOfProperties.length / articlesPerPage);
 
     const changePage = ({ selected }) => {
         setPageNumber(selected);
@@ -29,14 +29,6 @@ function Home() {
         axios.get("http://localhost:3005/api/properties")
         .then((response)=>{
             setListOfProperties(response.data);
-            // const uniqueCities = new Set();
-            // // Loop through the data and add city names to the Set
-            // response.data.forEach((property) => {
-            //     uniqueCities.add(property.city);
-            // });
-
-            // // Convert the Set back to an array (if needed)
-            // setUniqueCitiesArray(Array.from(uniqueCities));
         })
         .catch((err)=>{
             if(err.response.data.status!==404){
@@ -47,13 +39,22 @@ function Home() {
     },[]);
 
     const handleCityChange = (city) => {
-        //setListOfProperties(newData);
         setCity(city);
-        console.log('city = ', city);
     };
 
-    const resetCityChange = ()=>{
+    const resetChange = ()=>{
+
         setCity("");
+        setSearchCriteria({});
+    }
+
+    function onSearch( searchCriteria ){
+     console.log("onSearch in Home.js");
+        setSearchCriteria(searchCriteria);
+    }
+
+    function isObjectEmpty(obj) {
+        return Object.keys(obj).length === 0;
     }
 
     function filterData(listOfProperties, city){
@@ -62,30 +63,59 @@ function Home() {
             filteredProperties = filteredProperties.filter(
                 ( property ) => {return property.city.toLowerCase() == city.toLowerCase()} );
         }
+        if(isObjectEmpty(searchCriteria)){
+//console.log("searchCriteria is empty:");
+        }
+        else{
+//console.log("searchCriteria is not empty:",searchCriteria);
+             let minPrice = 0;
+             let maxPrice = 10000000000;
+            if (!searchCriteria.minPrice=='') {
+                minPrice = searchCriteria.minPrice;
+            } 
+            if (!searchCriteria.maxPrice == '' ) {
+                maxPrice = searchCriteria.maxPrice;
+            } 
+        
+            filteredProperties = filteredProperties.filter((property)=>{
+//console.log("property",property);      
+// console.log("property.bedrooms:",property.bedrooms);
+// console.log("searchCriteria.bedrooms:",searchCriteria.bedrooms);
+// console.log("property.bedrooms==searchCriteria.bedrooms:",property.bedrooms>=searchCriteria.bedrooms);
+//console.log(property.price >= minPrice && property.price <= maxPrice);
+                return (
+                    (property.price >= minPrice && property.price <= maxPrice)
+                    && (searchCriteria.propertyType =='' || property.type == searchCriteria.propertyType)
+                    && (searchCriteria.bedrooms =='' || property.bedrooms >= searchCriteria.bedrooms)
+                    && (searchCriteria.bathrooms =='' || property.bathrooms >= searchCriteria.bathrooms)
+                    && (searchCriteria.yearBuilt =='' || property.year_built >= searchCriteria.yearBuilt)
+                    )
+            });
+        }
+//console.log("filteredProperties=",filteredProperties);
         return filteredProperties;
     }
 
     const result = filterData(listOfProperties, city, "");
-
-
+    const pageCount = Math.ceil(result.length / articlesPerPage);
     const displayProperties = result
         .slice(propertiesVisited, propertiesVisited + articlesPerPage)
         .map((property, key)=>{
         if (Array.isArray(property.Pictures) && property.Pictures.length > 0) {
-       //     // Access the first picture's imageUrl
+       // Access the first picture's imageUrl
             const imageUrl = property.Pictures[0].imageUrl;
             return(
-               <Card key={key} id={property.id} img={imageUrl} address={property.address} city={property.city} type={property.type}
+                <Card key={key} id={property.id} img={imageUrl} address={property.address} city={property.city} type={property.type}
                    bedrooms={property.bedrooms} bathrooms={property.bathrooms}
                    year_built={property.year_built} price={property.price} features={property.features} 
-            />
+                />
         )}else{
             return(
-               <Card key={key} id={property.id} img={'notFound'} address={property.address} city={property.city} type={property.type}
+                <Card key={key} id={property.id} img={'notFound'} address={property.address} city={property.city} type={property.type}
                    bedrooms={property.bedrooms} bathrooms={property.bathrooms}
                    year_built={property.year_built} price={property.price} features={property.features}
-                   
-            />
+
+                />
            )
            }
        }
@@ -102,23 +132,27 @@ function Home() {
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover'}}>
                     <div className='mask' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
-                        <div className='d-flex justify-content-center align-items-center h-100'>
+                        <div className='d-flex justify-content-center align-items-center h-500'>
                             <div className='text-white mb-5'>
                                 <h1 className='mt-5'>{listOfProperties.length} properties in Quebec</h1>
-                                <SearchBar 
+                                <SearchBar style={{ position: 'absolute', bottom: '0', left: '0', right: '0' }}
                                     placeholder = 'Please input city...' 
                                     properties={listOfProperties} 
                                     handleCityChange={handleCityChange}
-                                    resetCityChange={resetCityChange}/>
+                                    resetChange={resetChange}
+                                    onSearch={onSearch}/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className='p-5 '>
-                <h2>Newest listing: </h2>
-                    <div className="card-container">
-
+                <div className="info">
+                    {listOfProperties.length==result.length 
+                    ? <h2>{listOfProperties.length} Newest Listing: </h2> 
+                    : <h2>{result.length} Properties Filtered:</h2> }
+                </div>
+                <div className="card-container">
                     {displayProperties}
                     <ReactPaginate
                         previousLabel={"Previous"}
