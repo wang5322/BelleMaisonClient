@@ -6,6 +6,7 @@ import '../App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
