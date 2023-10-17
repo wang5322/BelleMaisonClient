@@ -16,7 +16,7 @@ function BrokerList() {
   useEffect(() => {
     console.log("entered useEffect======");
     axios
-      .get(`http://localhost:3005/api/users/byRole/broker`)
+      .get(`${process.env.REACT_APP_HOST_URL}/api/users/byRole/broker`)
       .then((response) => {
         setBrokerList(response.data);
         console.log("broker lists", response.data);

@@ -26,7 +26,7 @@ function Home() {
     };
 
     useEffect(()=>{
-        axios.get("http://localhost:3005/api/properties")
+        axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties`)
         .then((response)=>{
             setListOfProperties(response.data);
             // const uniqueCities = new Set();

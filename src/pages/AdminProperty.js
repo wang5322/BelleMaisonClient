@@ -11,7 +11,7 @@ function AdminProperty() {
     const [propertyList, setPropertyList] = useState([]);
     const [activeProperty, setActiveProperty] = useState(1);
     useEffect(() => {
-        axios.get("http://localhost:3005/api/properties").then((res) => {
+        axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties`).then((res) => {
             setPropertyList(res.data);
         }).catch((err) => {
             if (err.response.data.status !== 404) {
@@ -23,7 +23,7 @@ function AdminProperty() {
     const deactive = (propertyid) => {
         axios
             .patch(
-                `http://localhost:3005/api/properties/byId/${propertyid}`,
+                `${process.env.REACT_APP_HOST_URL}/api/properties/byId/${propertyid}`,
                 { isActive: 0 },
                 { headers: { accessToken: localStorage.getItem("accessToken") } }
             )

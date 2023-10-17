@@ -13,7 +13,7 @@ function AdminUser() {
   const [activeUser, setActiveUser]=useState(1);
   useEffect(() => {
     axios
-      .get("http://localhost:3005/api/users")
+      .get(`${process.env.REACT_APP_HOST_URL}/api/users`)
       .then((res) => {
         setUserList(res.data);
       })
@@ -28,7 +28,7 @@ function AdminUser() {
   const approve = (userid) => {
     axios
       .patch(
-        `http://localhost:3005/api/users/admin/update`,
+        `${process.env.REACT_APP_HOST_URL}/api/users/admin/update`,
         { id: userid, broker_approval: 1 },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
@@ -48,7 +48,7 @@ function AdminUser() {
   const deactive = (userid) => {
     axios
       .patch(
-        `http://localhost:3005/api/users/admin/update`,
+        `${process.env.REACT_APP_HOST_URL}/api/users/admin/update`,
         { id: userid, is_active: 0 },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )

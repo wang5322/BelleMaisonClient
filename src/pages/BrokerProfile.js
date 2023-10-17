@@ -48,7 +48,7 @@ function BrokerProfile() {
       if (isCertificate) {
         formData.append("isCertificate", isCertificate);
       }
-      Axios.post("http://localhost:3005/api/pictures", formData, {
+      Axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then((response) => {
@@ -126,7 +126,7 @@ function BrokerProfile() {
   const handleProfileShow = () => setProfileEdit(true);
 
   const deleteProfile = (profilId) => {
-    Axios.delete(`http://localhost:3005/api/pictures/${profilId}`)
+    Axios.delete(`${process.env.REACT_APP_HOST_URL}/api/pictures/${profilId}`)
       .then(() => {
         setProfile({});
       })
@@ -143,7 +143,7 @@ function BrokerProfile() {
   //Get broker info & properties info
   useEffect(() => {
     // console.log("======entered useEffect=========");
-    Axios.get(`http://localhost:3005/api/users/byId`, {
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/users/byId`, {
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -177,7 +177,7 @@ function BrokerProfile() {
         // }
       });
 
-    Axios.get(`http://localhost:3005/api/properties/byBroker`, {
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties/byBroker`, {
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -214,7 +214,7 @@ function BrokerProfile() {
     }),
     onSubmit: (values) => {
       try {
-        Axios.patch(`http://localhost:3005/api/users/byId/`, values, {
+        Axios.patch(`${process.env.REACT_APP_HOST_URL}/api/users/byId/`, values, {
           headers: { accessToken: localStorage.getItem("accessToken") },
         }).then(() => {
           alert("profile info updated");

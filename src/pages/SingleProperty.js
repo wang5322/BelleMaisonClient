@@ -47,7 +47,7 @@ const SingleProperty = () => {
   const { id } = useParams();
   useEffect(() => {
     axios
-      .get(`http://localhost:3005/api/pictures/byProp/${id}`)
+      .get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`)
       .then((response) => {
         let tempPictures = [];
         response.data.forEach((x) => {
@@ -63,7 +63,7 @@ const SingleProperty = () => {
       });
 
     axios
-      .get(`http://localhost:3005/api/properties/byId/${id}`)
+      .get(`${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`)
       .then((res) => {
         setProperty(res.data);
         console.log(res.data);
@@ -97,7 +97,7 @@ const SingleProperty = () => {
   const likeAProperty = (property_id) => {
     axios
       .post(
-        "http://localhost:3005/api/favorites",
+        `${process.env.REACT_APP_HOST_URL}/api/favorites`,
         { property_id: property_id },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )

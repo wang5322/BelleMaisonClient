@@ -29,7 +29,7 @@ function Registration(){
             alert("Please Select Role!");
             return;
         }
-        axios.post("http://localhost:3005/api/users", data)
+        axios.post(`${process.env.REACT_APP_HOST_URL}/api/users`, data)
         .then((response)=>{
             if (response.data.error){
                 alert(response.data.error);

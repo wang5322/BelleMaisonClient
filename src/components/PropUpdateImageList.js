@@ -11,7 +11,7 @@ function PropUpdateImageList({ pictures, setPictures }) {
   // console.log("certificates===", pictures);
   const deleteImage = (id) => {
     console.log("image deleted");
-    Axios.delete(`http://localhost:3005/api/pictures/${id}`)
+    Axios.delete(`${process.env.REACT_APP_HOST_URL}/api/pictures/${id}`)
       .then((response) => {
         const deletedPicId = response.data.id;
         const updated = pictures.filter(

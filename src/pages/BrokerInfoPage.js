@@ -16,7 +16,7 @@ function BrokerInfoPage() {
   //Get broker info & properties info
   useEffect(() => {
     // TODO:use id param
-    Axios.get(`http://localhost:3005/api/users/brokerInfo/${id}`, {
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/users/brokerInfo/${id}`, {
       headers: {
         accessToken: localStorage.getItem("accessToken"),
       },
@@ -59,7 +59,7 @@ function BrokerInfoPage() {
     //     alert(error);
     //   });
     let filteredProperties = [];
-    Axios.get("http://localhost:3005/api/properties")
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties`)
       .then((response) => {
         const numberId = parseInt(id, 10); // id that passed from params is a string
         // Filter out elements where brokerId is not equal to id

@@ -5,7 +5,7 @@ function GetImageTest() {
   const [pictures, setPictures] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3005/api/pictures/byProp/8")
+    Axios.get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/8`)
       .then((response) => {
         setPictures(response.data);
       })

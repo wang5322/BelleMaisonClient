@@ -18,7 +18,7 @@ function TestPicture() {
       formData.append("images", file);
     });
 
-    await axios.post("http://localhost:3005/api/pictures", formData, {
+    await axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     setFiles([]);
