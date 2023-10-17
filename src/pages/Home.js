@@ -16,7 +16,7 @@ function Home() {
     const [city, setCity] = useState();
     const [searchCriteria , setSearchCriteria] = useState({});
 
-    const articlesPerPage = 5;
+    const articlesPerPage = 4;
     const propertiesVisited = pageNumber * articlesPerPage;
 
     
