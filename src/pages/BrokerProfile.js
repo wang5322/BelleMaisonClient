@@ -53,6 +53,7 @@ function BrokerProfile() {
       })
         .then((response) => {
           console.log("pictureId", response.data.id);
+          window.location.reload();
         })
         .catch((error) => {
           if (error.response.data.message) {
@@ -64,7 +65,7 @@ function BrokerProfile() {
           }
         });
       setFiles([]);
-      window.location.reload();
+      // window.location.reload();
     } else {
       console.log("No files selected");
     }
