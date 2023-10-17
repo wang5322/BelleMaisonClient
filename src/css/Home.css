@@ -1,46 +1,45 @@
 .heroImage {
-    
-    background-repeat: no-repeat !important;
-    background-size: cover;
+  background-repeat: no-repeat !important;
+  background-size: cover;
 }
 
-.mask{
+.mask {
   height: 300px;
 }
 
 .paginationBttns {
-    width: 80%;
-    height: 30px;
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    font-size: 14px;
-  }
-  
-  .paginationBttns a {
-    padding: 8px;
-    margin: 3px;
-    border-radius: 5px;
-    border: 1px solid #2c83f5;
-    color: #043a3a;
-    cursor: pointer;
-  }
-  
-  .paginationBttns a:hover {
-    color: white;
-    background-color: #37a6f0;
-  }
-  
-  .paginationActive a {
-    color: white;
-    background-color: #61a1eb;
-  }
-  
-  .paginationDisabled a {
-    color: rgb(78, 74, 74);
-    background-color: rgb(167, 160, 160);
-  }
+  width: 80%;
+  height: 30px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+}
 
-  .info{
-    margin-left: 145px;
-  }
+.paginationBttns a {
+  padding: 8px;
+  margin: 3px;
+  border-radius: 5px;
+  border: 1px solid rgb(14, 51, 172);
+  color: #043a3a;
+  cursor: pointer;
+}
+
+.paginationBttns a:hover {
+  color: white;
+  background-color: rgb(64, 83, 148);
+}
+
+.paginationActive a {
+  color: white;
+  background-color: rgb(14, 51, 172);
+}
+
+.paginationDisabled a {
+  color: rgb(18, 17, 17);
+  background-color: rgb(205, 196, 196);
+}
+
+.info {
+  margin-left: 145px;
+}
