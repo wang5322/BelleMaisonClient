@@ -9,7 +9,6 @@ import CertiGallery from "../components/PropUpdateImageList";
 import * as Yup from "yup";
 
 function BrokerProfile() {
-  //   const id = 15;
   const [brokerId, setBrokerId] = useState("");
   const [broker, setBroker] = useState({});
   const [files, setFiles] = useState([]);
