@@ -1,12 +1,15 @@
 import React, {useRef, useState } from "react";
-import "./SearchBar.css";
+import "../css/SearchBar.css";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from '@mui/icons-material/Close';
+import SearchPanel from "./SearchPanel";
 
-function SearchBar({ placeholder, properties, handleCityChange ,resetCityChange }) {
+
+function SearchBar({ placeholder, properties, handleCityChange ,resetChange, onSearch ,setVisible}) {
   const [filteredData, setFilteredData] = useState([]);
   const [inputCity, setInputCity] = useState("");
   const [wordEntered, setWordEntered] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
   const inputRef = useRef(null);
 
   const uniqueCities = ()=>{
@@ -46,32 +49,46 @@ function SearchBar({ placeholder, properties, handleCityChange ,resetCityChange 
     handleCityChange(value);
   };
 
-  const resetSearchCity = ()=>{
+  const resetSearch = ()=>{
     inputRef.current.value = "";
     setInputCity("");
     clearInput();
-    resetCityChange();
+    resetChange();
   }
+
+  function setVisible( ){
+     console.log("= setVisible in SearchBar.js");
+    setIsVisible(false);
+}
+
+  const toggle = ()=>{
+    setIsVisible(!isVisible);
+}
+
   return (
     <div className="search">
       <div className="searchInputs">
         <input
-            id="searchInput"
-            type="text"
-            placeholder={placeholder}
-            onChange={handleFilterCity}
-            ref={inputRef}
+          id="searchInput"
+          type="text"
+          placeholder={placeholder}
+          onChange={handleFilterCity}
+          onClick={()=>{setIsVisible(false)}}
+          ref={inputRef}
         ></input>
-        <div className="searchIcon">
-            {/* <SearchIcon onClick={()=>{setSearchCity(inputRef.current.value)}} /> */}
-            {inputCity === "" ? (
-            <SearchIcon onClick={()=>{setSearchCity(inputRef.current.value)}} />
-            ) : (
-            <CloseIcon id="clearBtn" onClick={resetSearchCity} />
-          )}
-        </div>
+          <div className="searchIcon">
+              {/* {inputCity === "" ? ( */}
+              <SearchIcon onClick={()=>{setSearchCity(inputRef.current.value)}} />
+              {/* ) : (
+              <CloseIcon id="clearBtn" onClick={resetSearchCity} />
+            )} */}
+            
+          </div>
+          <button className="moreoption" onClick={toggle}>More Option</button>
+          <button className="moreoption" onClick={resetSearch}>Clear Search</button>
       </div>
-      {filteredData.length !== 0 && (
+      {isVisible && <SearchPanel onSearch={onSearch} setVisible={setVisible}/>}
+      {filteredData.length !== 0 && !isVisible &&(
         <div className="dataResult">
           {filteredData.map((value, key) => {
             return (

@@ -1,0 +1,39 @@
+.panel-container{
+    background-color:rgb(252, 250, 249);
+    margin-top: 10px;
+    border: 1px solid rgb(133, 128, 128);
+    border-radius: 2%;
+    box-shadow: 0 4px 8px 0 rgba(49, 48, 48, 0.2);
+    transition: 0.3s;
+}
+
+.panel-container button{
+    background-color:rgb(14, 51, 172);
+    color: white;
+    margin: 10px;
+    width: 150px;
+    height: 40px;
+}
+.panel-container button:hover{
+    background-color:rgb(36, 103, 228);
+    cursor: pointer;
+}
+
+.searchPanel{
+    display: flex;
+    background-color:rgb(252, 250, 249);
+    margin: 10px;
+}
+
+.searchPanel label{
+    color: rgb(24, 23, 23);
+}
+
+.panel-container h4{
+    color: rgb(24, 23, 23);
+}
+
+.searchPanel select{
+    height: 40px;
+    margin: 10px;
+}

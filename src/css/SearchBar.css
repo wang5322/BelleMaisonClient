@@ -12,15 +12,39 @@
     font-size: 18px;
     padding: 15px;
     height: 60px;
-    width: 300px;
+    width: 400px;
+}
+
+.searchInputs button{
+  background-color: rgb(14, 51, 172);
+  color: white;
+  border: 0;
+  border-radius: 2px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 18px;
+  padding: 15px;
+  height: 60px;
+  width: 150px;
+  margin-left: 20px;
+}
+
+.searchInputs button:hover{
+  background-color:rgb(36, 103, 228);
+  cursor: pointer;
 }
 
 .searchIcon{
     height: 60px;
     width: 50px;
-    background-color: rgb(91, 86, 160);
+    background-color: rgb(14, 51, 172);
     display: grid;
     place-items: center;
+}
+
+.searchIcon:hover{
+  background-color:rgb(36, 103, 228);
+  cursor: pointer;
 }
 
 input:focus{
