@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 function AdminProperty() {
     const [propertyList, setPropertyList] = useState([]);
+    const [activeProperty, setActiveProperty] = useState(1);
     useEffect(() => {
         axios.get("http://localhost:3005/api/properties").then((res) => {
             setPropertyList(res.data);
@@ -18,7 +19,28 @@ function AdminProperty() {
                 return
             }
         })
-    }, []);
+    }, [activeProperty]);
+    const deactive = (propertyid) => {
+        axios
+            .patch(
+                `http://localhost:3005/api/properties/byId/${propertyid}`,
+                { isActive: 0 },
+                { headers: { accessToken: localStorage.getItem("accessToken") } }
+            )
+            .then((res) => {
+
+                if (res.data.error) {
+                    alert("error in approving user");
+                    return;
+                }
+                console.log(res);
+                setActiveProperty(activeProperty + 1);
+                alert("property is deactived");
+            })
+            .catch((err) => {
+                alert("error in deactive property");
+            });
+    }
     return (
         <div className="adminTable">
             <Row>
@@ -56,7 +78,9 @@ function AdminProperty() {
 
                                 <td>{value.isActive}</td>
 
-                                <td><Button variant="outline-warning">Deactive</Button></td>
+                                <td><Button variant="outline-warning" onClick={() => {
+                                    deactive(value.id);
+                                }}>Deactive</Button></td>
                             </tr>
                         )
 
