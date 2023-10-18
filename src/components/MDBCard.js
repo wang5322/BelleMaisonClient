@@ -48,6 +48,13 @@ const Card = ({
     }
   };
 
+  
+  const formattedPrice = price.toLocaleString('en-US', { 
+    style: 'currency',
+    currency: 'CAD',
+    maximumFractionDigits: 0, // This ensures no decimal places
+  });
+
   const toggleActivation = (propertyId) => {
     const newStatus = isActive == 1 ? 0 : 1;
     Axios.patch(
@@ -99,7 +106,7 @@ const Card = ({
           )}
         </MDBRipple>
         <MDBCardBody>
-          <MDBCardTitle>${price}</MDBCardTitle>
+          <MDBCardTitle>{formattedPrice}</MDBCardTitle>
           <div className="propertyInfo">
             <p>
               {type} Built at: {year_built}

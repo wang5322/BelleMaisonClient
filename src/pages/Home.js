@@ -3,7 +3,9 @@ import SearchBar from "../components/SearchBar";
 import '../css/Home.css';
 import axios from "axios";
 import Card from "../components/MDBCard";
+import Sorting from "../components/Sorting";
 import ReactPaginate from 'react-paginate';
+
 
 function Home() {
 
@@ -15,11 +17,10 @@ function Home() {
     const [pageNumber, setPageNumber] = useState(0);
     const [city, setCity] = useState();
     const [searchCriteria , setSearchCriteria] = useState({});
+    const [result,setResult] = useState(listOfProperties);
 
     const articlesPerPage = 4;
     const propertiesVisited = pageNumber * articlesPerPage;
-
-    
 
     const changePage = ({ selected }) => {
         setPageNumber(selected);
@@ -43,13 +44,11 @@ function Home() {
     };
 
     const resetChange = ()=>{
-
         setCity("");
         setSearchCriteria({});
     }
 
-    function onSearch( searchCriteria ){
-     console.log("onSearch in Home.js");
+    function onSearchabc( searchCriteria ){
         setSearchCriteria(searchCriteria);
     }
 
@@ -92,12 +91,52 @@ function Home() {
                     )
             });
         }
-//console.log("filteredProperties=",filteredProperties);
+        //setResult(filteredProperties);
+        console.log("filteredProperties=",filteredProperties);
         return filteredProperties;
     }
 
-    const result = filterData(listOfProperties, city, "");
+    useEffect(()=>{
+        let filtered = filterData(listOfProperties, city);
+        setResult(filtered);
+    },[listOfProperties, city, searchCriteria])
+
+    console.log("result=",result);
+    
+    function handleSorting(sorting) {
+        let sortedData;
+        console.log("sorting:" + sorting);
+        if (sorting === 'newest') {
+            sortedData = [...result].sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateA - dateB;
+            });
+            console.log('sortedData', sortedData);
+        }
+        if (sorting === 'oldest') {
+            sortedData = [...result].sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateB - dateA;
+            });
+            console.log('sortedData', sortedData);
+        }
+        if (sorting === 'priceAsc') {
+          sortedData = [...result].sort((a, b) => a.price - b.price);
+          console.log('sortedData', sortedData);
+        }
+        if (sorting === 'priceDesc') {
+          sortedData = [...result].sort((a, b) => b.price - a.price);
+          console.log('sortedData', sortedData);
+        }
+        setResult([...sortedData]);
+        return sortedData;
+      }
+
+
     const pageCount = Math.ceil(result.length / articlesPerPage);
+
     const displayProperties = result
         .slice(propertiesVisited, propertiesVisited + articlesPerPage)
         .map((property, key)=>{
@@ -141,17 +180,22 @@ function Home() {
                                     properties={listOfProperties} 
                                     handleCityChange={handleCityChange}
                                     resetChange={resetChange}
-                                    onSearch={onSearch}/>
+                                    onSearch={onSearchabc}/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className='p-5 '>
-                <div className="info">
-                    {listOfProperties.length==result.length 
-                    ? <h2>{listOfProperties.length} Newest Listing: </h2> 
-                    : <h2>{result.length} Properties Filtered:</h2> }
+                <div style={{ display: 'flex' }}>
+                    <div className="info">
+                        {listOfProperties.length==result.length 
+                        ? <h2>{listOfProperties.length} Newest Listing: </h2> 
+                        : <h2>{result.length} Properties Filtered:</h2> }
+                    </div>
+                    <div className="sorting">
+                        <Sorting handleSorting={handleSorting} />
+                    </div>
                 </div>
                 <div className="card-container">
                     {displayProperties}
