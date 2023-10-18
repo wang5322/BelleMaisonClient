@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBCard,
   MDBCardBody,
@@ -13,6 +13,7 @@ import BedIcon from "@mui/icons-material/Bed";
 import BathtubIcon from "@mui/icons-material/Bathtub";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import Axios from "axios";
 
 const Card = ({
   id,
@@ -25,8 +26,10 @@ const Card = ({
   year_built,
   price,
   page,
+  isActive,
   features,
 }) => {
+  // const [isPropActive, setIsPropActive] = useState(true); // toggle property state
   let navigate = useNavigate();
 
   const handleNavigate = (id) => {
@@ -43,6 +46,29 @@ const Card = ({
     } else {
       navigate(`/`);
     }
+  };
+
+  const toggleActivation = (propertyId) => {
+    const newStatus = isActive == 1 ? 0 : 1;
+    Axios.patch(
+      `${process.env.REACT_APP_HOST_URL}/api/properties/byId/${propertyId}`,
+      { isActive: newStatus },
+      { headers: { accessToken: localStorage.getItem("accessToken") } }
+    )
+      .then((response) => {
+        if (response.data.error) {
+          alert("error in toggling property");
+          return;
+        }
+        // setIsPropActive(!isPropActive);
+
+        alert(`Property is ${isActive == 1 ? `deactivated` : `activated`}`);
+        isActive = 0;
+        window.location.reload();
+      })
+      .catch((error) => {
+        alert("error in toggling property");
+      });
   };
   return (
     <>
@@ -71,9 +97,6 @@ const Card = ({
               alt={type}
             />
           )}
-          {/* <a>
-                <div className='mask' style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }}></div>
-                </a> */}
         </MDBRipple>
         <MDBCardBody>
           <MDBCardTitle>${price}</MDBCardTitle>
@@ -100,13 +123,24 @@ const Card = ({
             View
           </Button>
           {page === "broker" && (
-            <Button
-              variant="dark"
-              className="mx-2"
-              onClick={() => handleUpdate(id)}
-            >
-              Update
-            </Button>
+            <>
+              {" "}
+              <Button
+                variant="dark"
+                className="mx-2"
+                onClick={() => handleUpdate(id)}
+              >
+                Update
+              </Button>
+              <Button
+                variant={isActive == 1 ? "outline-danger" : "outline-dark"}
+                onClickCapture={() => {
+                  toggleActivation(id);
+                }}
+              >
+                {isActive == 1 ? "Deactivate" : "Activate"}
+              </Button>
+            </>
           )}
         </MDBCardBody>
       </MDBCard>
