@@ -1,47 +1,44 @@
 import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
-import '../css/Home.css';
+import "../css/Home.css";
 import axios from "axios";
 import Card from "../components/MDBCard";
-import Sorting from "../components/Sorting";
 import ReactPaginate from 'react-paginate';
 
-
 function Home() {
-
-    const initValue = {
-        Pictures:{ imageUrl:""}
-    }
+  const initValue = {
+    Pictures: { imageUrl: "" },
+  };
 
     const [listOfProperties, setListOfProperties] = useState([initValue]);
     const [pageNumber, setPageNumber] = useState(0);
     const [city, setCity] = useState();
     const [searchCriteria , setSearchCriteria] = useState({});
-    const [result,setResult] = useState(listOfProperties);
 
     const articlesPerPage = 4;
     const propertiesVisited = pageNumber * articlesPerPage;
 
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
 
-    useEffect(()=>{
-        axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties`)
-        .then((response)=>{
-            setListOfProperties(response.data);
-        })
-        .catch((err)=>{
-            if(err.response.data.status!==404){
-                alert("no records found!");
-                return
-            }
-        })
-    },[]);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_HOST_URL}/api/properties`)
+      .then((response) => {
+        setListOfProperties(response.data);
+      })
+      .catch((err) => {
+        if (err.response.data.status !== 404) {
+          alert("no records found!");
+          return;
+        }
+      });
+  }, []);
 
-    const handleCityChange = (city) => {
-        setCity(city);
-    };
+  const handleCityChange = (city) => {
+    setCity(city);
+  };
 
     const resetChange = ()=>{
         setCity("");
@@ -52,9 +49,9 @@ function Home() {
         setSearchCriteria(searchCriteria);
     }
 
-    function isObjectEmpty(obj) {
-        return Object.keys(obj).length === 0;
-    }
+  function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0;
+  }
 
     function filterData(listOfProperties, city){
         let filteredProperties = listOfProperties;
@@ -161,59 +158,77 @@ function Home() {
     )
 
 
-    return (
-        <>
-        <main className="main-content">
-            <div>
-                <div className='p-5 text-center bg-image'
-                    style={{ backgroundImage: "url('https://mdbootstrap.com/img/new/slides/041.webp')",
-                    // style={{ backgroundImage: "url('../images/heroImage.jpg')",
-                        height: 400 ,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: 'cover'}}>
-                    <div className='mask' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
-                        <div className='d-flex justify-content-center align-items-center h-500'>
-                            <div className='text-white mb-5'>
-                                <h1 className='mt-5'>{listOfProperties.length} properties in Quebec</h1>
-                                <SearchBar style={{ position: 'absolute', bottom: '0', left: '0', right: '0' }}
-                                    placeholder = 'Please input city...' 
-                                    properties={listOfProperties} 
-                                    handleCityChange={handleCityChange}
-                                    resetChange={resetChange}
-                                    onSearch={onSearchabc}/>
-                            </div>
-                        </div>
-                    </div>
+  return (
+    <>
+      <main className="main-content">
+        <div>
+          <div
+            className="p-5 text-center bg-image"
+            style={{
+              backgroundImage:
+                "url('https://images.pexels.com/photos/7579042/pexels-photo-7579042.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')",
+              // style={{ backgroundImage: "url('../images/heroImage.jpg')",
+              height: 400,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+            }}
+          >
+            <div
+              className="mask"
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                borderRadius: "10px",
+              }}
+            >
+              <div className="d-flex justify-content-center align-items-center h-500">
+                <div className="text-white mb-5">
+                  <h1 className="mt-5">
+                    {listOfProperties.length} properties in Quebec
+                  </h1>
+                  <SearchBar
+                    style={{
+                      position: "absolute",
+                      bottom: "0",
+                      left: "0",
+                      right: "0",
+                    }}
+                    placeholder="Please input city..."
+                    properties={listOfProperties}
+                    handleCityChange={handleCityChange}
+                    resetChange={resetChange}
+                    onSearch={onSearch}
+                  />
                 </div>
+              </div>
             </div>
-            <div className='p-5 '>
-                <div style={{ display: 'flex' }}>
-                    <div className="info">
-                        {listOfProperties.length==result.length 
-                        ? <h2>{listOfProperties.length} Newest Listing: </h2> 
-                        : <h2>{result.length} Properties Filtered:</h2> }
-                    </div>
-                    <div className="sorting">
-                        <Sorting handleSorting={handleSorting} />
-                    </div>
-                </div>
-                <div className="card-container">
-                    {displayProperties}
-                    <ReactPaginate
-                        previousLabel={"Previous"}
-                        nextLabel={"Next"}
-                        pageCount={pageCount}
-                        onPageChange={changePage}
-                        containerClassName={"paginationBttns"}
-                        previousLinkClassName={"previousBttn"}
-                        nextLinkClassName={"nextBttn"}
-                        disabledClassName={"paginationDisabled"}
-                        activeClassName={"paginationActive"}
-                    />
-                </div>
-            </div>
-            </main>
-        </>
-    )
+          </div>
+        </div>
+        <div className="p-5 ">
+          <div className="info">
+            {listOfProperties.length == result.length ? (
+              <h2>{listOfProperties.length} Newest Listing: </h2>
+            ) : (
+              <h2>{result.length} Properties Filtered:</h2>
+            )}
+          </div>
+          <div className="card-container">
+            {displayProperties}
+            <ReactPaginate
+              previousLabel={"Previous"}
+              nextLabel={"Next"}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={"paginationBttns"}
+              previousLinkClassName={"previousBttn"}
+              nextLinkClassName={"nextBttn"}
+              disabledClassName={"paginationDisabled"}
+              activeClassName={"paginationActive"}
+              pageLinkClassName={"pageLink"} //added to modify page link number
+            />
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }
 export default Home;

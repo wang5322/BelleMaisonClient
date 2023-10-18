@@ -25,7 +25,7 @@ import "../Property.css";
 
 const SingleProperty = () => {
   const [pictures, setPictures] = useState([]);
-  const { authState } = useContext(AuthContext);
+  const { authState, setAuthState } = useContext(AuthContext);
 
   //save favourite
   const [liked, setLiked] = useState(false);
@@ -43,11 +43,30 @@ const SingleProperty = () => {
   const [destination, setDestination] = useState({ lat: 0, lng: 0 });
   const [property, setProperty] = useState({});
   const [distance, setDistance] = useState(0);
+  let loggedInUserId = 0;
 
   const { id } = useParams();
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`)
+    axios.get(`${process.env.REACT_APP_HOST_URL}/api/users/auth`, {
+      headers: {
+        accessToken: localStorage.getItem("accessToken"),
+      },
+    })
+      .then((response) => {
+        if (response.data.error) {
+          setAuthState({ ...authState, status: false });
+        } else {
+          setAuthState({
+            email: response.data.email,
+            id: response.data.id,
+            role: response.data.role,
+            approval: response.data.broker_approval,
+            status: true,
+          });
+          loggedInUserId = response.data.id;
+        }
+        return axios.get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`)
+      })
       .then((response) => {
         let tempPictures = [];
         response.data.forEach((x) => {
@@ -57,26 +76,11 @@ const SingleProperty = () => {
           });
         });
         setPictures(tempPictures);
+        return axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`)
       })
-      .catch((error) => {
-        alert("there is an error");
-      });
-
-    axios
-      .get(`${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`)
       .then((res) => {
         setProperty(res.data);
-        console.log(res.data);
-        console.log(authState.id);
-        if (
-          res.data.Favorites[0]
-          // &&
-          // res.data.Favorites[0].user_id === authState.id
-        ) {
-          setLiked(true);
-        } else {
-          setLiked(false);
-        }
+        setLiked(res.data.Favorites.some(favorite => favorite.user_id === loggedInUserId));
         const tempAddress = `${res.data.address},${res.data.city}`;
         return fromAddress(tempAddress);
       })
@@ -90,30 +94,31 @@ const SingleProperty = () => {
       .catch((err) => {
         console.log(err);
       });
-
-    console.log("liked: " + liked);
   }, []);
 
   const likeAProperty = (property_id) => {
-    axios
-      .post(
-        `${process.env.REACT_APP_HOST_URL}/api/favorites`,
-        { property_id: property_id },
-        { headers: { accessToken: localStorage.getItem("accessToken") } }
-      )
-      .then((res) => {
-        setLiked(res.data.liked);
-        if (res.data.liked) {
-          return {
-            ...property,
-            Favorites: [{ ...property.Favorite, user_id: authState.id }],
-          };
-        } else {
-          const likesArray = property.Favorites;
-          likesArray.pop();
-          return { ...property, Favorites: likesArray };
-        }
-      });
+    if (authState.status) {
+      axios.post(
+          `${process.env.REACT_APP_HOST_URL}/api/favorites`,
+          { property_id: property_id },
+          { headers: { accessToken: localStorage.getItem("accessToken") } }
+        )
+        .then((res) => {
+          setLiked(res.data.liked);
+          if (res.data.liked) {
+            return {
+              ...property,
+              Favorites: [{ ...property.Favorite, user_id: authState.id }],
+            };
+          } else {
+            const likesArray = property.Favorites;
+            likesArray.pop();
+            return { ...property, Favorites: likesArray };
+          }
+        });
+    } else {
+      alert("please login before like");
+    }
   };
 
   return (
@@ -134,17 +139,25 @@ const SingleProperty = () => {
                   <FavoriteIcon
                     onClick={() => {
                       likeAProperty(property.id);
+
                     }}
-                    className={liked ? "likeBttn" : "unlikeBttn"}
+                    className="likeBttn"
+                  // className={liked ? "likeBttn" : "unlikeBttn"}
+
                   />
                 ) : (
                   <FavoriteBorderIcon
                     onClick={() => {
                       likeAProperty(property.id);
+
                     }}
-                    className={liked ? "likeBttn" : "unlikeBttn"}
+                    className="unlikeBttn"
+                  // className={liked ? "likeBttn" : "unlikeBttn"}
+
                   />
-                )}
+
+                )
+                }
                 <span className="price">${property.price}</span>
               </div>
             </div>

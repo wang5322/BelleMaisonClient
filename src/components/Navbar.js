@@ -43,7 +43,9 @@ function OffcanvasNavbar() {
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/brokerList">FindBroker</Nav.Link>
                 {/* <Nav.Link href="#action2">Search</Nav.Link> */}
-                {authState.status && authState.role ==="broker" &&  <Nav.Link href="/postProperty">PostProperty</Nav.Link>}
+                {authState.status && authState.role === "broker" && (
+                  <Nav.Link href="/postProperty">PostProperty</Nav.Link>
+                )}
 
                 {/* <NavDropdown
                   title="More"
@@ -58,31 +60,40 @@ function OffcanvasNavbar() {
                     Something else here
                   </NavDropdown.Item>
                 </NavDropdown> */}
+
+                {authState.role === "broker" && (
+                  <Nav.Link href="/myProfile/broker">MyProfile</Nav.Link>
+                )}
+                {authState.role === "buyer" && (
+                  <Nav.Link href="/myProfile/user">MyProfile</Nav.Link>
+                )}
+              </Nav>
+
+              <Nav className="justify-content-end flex-grow-1 pe-3">
                 {authState.status ? (
-                  <span mt={4} className="d-flex justify-content-end mt-2">
-                    <h6>Hello, {authState.email} </h6>{" "}
-                    {authState.status && (
-                      <>
-                      <Button size="sm" onClick={logout}>
-                        {" "}
-                        Logout
-                      </Button>
-                      
-                     
-                      </>
-                    )}
+                  <span className="d-flex  mt-2">
+                    <Button
+                      size="sm"
+                      variant="outline-primary"
+                      className="mt-1 "
+                    >
+                      Hello, {authState.email}{" "}
+                    </Button>
+
+                    <Button
+                      variant="secondary"
+                      className="mx-1"
+                      size="sm"
+                      onClick={logout}
+                    >
+                      Logout
+                    </Button>
                   </span>
                 ) : (
                   <>
                     <Nav.Link href="/login">Login</Nav.Link>
                     <Nav.Link href="/register">Register</Nav.Link>
                   </>
-                )}
-                {authState.role ==="broker" && (
-                  <Nav.Link href="/myProfile/broker">my profile</Nav.Link>
-                )}
-                {authState.role ==="buyer" && (
-                   <Nav.Link href="/myProfile/user">my profile</Nav.Link>
                 )}
               </Nav>
             </Offcanvas.Body>
