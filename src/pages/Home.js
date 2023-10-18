@@ -3,6 +3,7 @@ import SearchBar from "../components/SearchBar";
 import "../css/Home.css";
 import axios from "axios";
 import Card from "../components/MDBCard";
+import Sorting from "../components/Sorting";
 import ReactPaginate from 'react-paginate';
 
 function Home() {
@@ -89,8 +90,6 @@ function Home() {
                     )
             });
         }
-        //setResult(filteredProperties);
-        console.log("filteredProperties=",filteredProperties);
         return filteredProperties;
     }
 
@@ -99,18 +98,18 @@ function Home() {
         setResult(filtered);
     },[listOfProperties, city, searchCriteria])
 
-    console.log("result=",result);
+    
     
     function handleSorting(sorting) {
         let sortedData;
-        console.log("sorting:" + sorting);
+        
         if (sorting === 'newest') {
             sortedData = [...result].sort((a, b) => {
                 const dateA = new Date(a.createdAt);
                 const dateB = new Date(b.createdAt);
                 return dateA - dateB;
             });
-            console.log('sortedData', sortedData);
+            
         }
         if (sorting === 'oldest') {
             sortedData = [...result].sort((a, b) => {
@@ -118,15 +117,15 @@ function Home() {
                 const dateB = new Date(b.createdAt);
                 return dateB - dateA;
             });
-            console.log('sortedData', sortedData);
+            
         }
         if (sorting === 'priceAsc') {
           sortedData = [...result].sort((a, b) => a.price - b.price);
-          console.log('sortedData', sortedData);
+          
         }
         if (sorting === 'priceDesc') {
           sortedData = [...result].sort((a, b) => b.price - a.price);
-          console.log('sortedData', sortedData);
+          
         }
         setResult([...sortedData]);
         return sortedData;
@@ -205,13 +204,16 @@ function Home() {
           </div>
         </div>
         <div className="p-5 ">
-          <div className="info">
-            {listOfProperties.length == result.length ? (
-              <h2>{listOfProperties.length} Newest Listing: </h2>
-            ) : (
-              <h2>{result.length} Properties Filtered:</h2>
-            )}
-          </div>
+            <div style={{ display: 'flex' }}>
+                    <div className="info">
+                        {listOfProperties.length==result.length 
+                        ? <h2>{listOfProperties.length} Newest Listing: </h2> 
+                        : <h2>{result.length} Properties Filtered:</h2> }
+                    </div>
+                    <div className="sorting">
+                        <Sorting handleSorting={handleSorting} />
+                    </div>
+            </div>
           <div className="card-container">
             {displayProperties}
             <ReactPaginate
