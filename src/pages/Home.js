@@ -14,6 +14,7 @@ function Home() {
     const [pageNumber, setPageNumber] = useState(0);
     const [city, setCity] = useState();
     const [searchCriteria , setSearchCriteria] = useState({});
+    const [result,setResult] = useState(listOfProperties);
 
     const articlesPerPage = 4;
     const propertiesVisited = pageNumber * articlesPerPage;
@@ -196,7 +197,7 @@ function Home() {
                     properties={listOfProperties}
                     handleCityChange={handleCityChange}
                     resetChange={resetChange}
-                    onSearch={onSearch}
+                    onSearch={onSearchabc}
                   />
                 </div>
               </div>

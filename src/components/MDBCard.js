@@ -49,11 +49,13 @@ const Card = ({
   };
 
   
-  const formattedPrice = price.toLocaleString('en-US', { 
-    style: 'currency',
-    currency: 'CAD',
-    maximumFractionDigits: 0, // This ensures no decimal places
-  });
+  const formattedPrice = price
+    ? price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'CAD',
+        maximumFractionDigits: 0,
+      })
+    : 'Price not available'; 
 
   const toggleActivation = (propertyId) => {
     const newStatus = isActive == 1 ? 0 : 1;
