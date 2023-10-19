@@ -54,7 +54,7 @@ function App() {
             email: response.data.email,
             id: response.data.id,
             role: response.data.role,
-            approval: response.data.broker_approval,
+            approval: response.data.approval,
             status: true,
           });
         }
@@ -64,8 +64,6 @@ function App() {
   return (
     <div className="app-container">
       <AuthContext.Provider value={{ authState, setAuthState }}>
-        
-        
         <Router>
           {/* <Navbar /> */}
           <Navbar2 />
