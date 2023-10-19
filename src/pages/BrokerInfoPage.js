@@ -47,17 +47,6 @@ function BrokerInfoPage() {
         // }
       });
 
-    // Axios.get(`http://localhost:3005/api/properties/byBroker`, {
-    //   headers: {
-    //     accessToken: localStorage.getItem("accessToken"),
-    //   },
-    // })
-    //   .then((response) => {
-    //     setProperties(response.data);
-    //   })
-    //   .catch((error) => {
-    //     alert(error);
-    //   });
     let filteredProperties = [];
     Axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties`)
       .then((response) => {
@@ -79,7 +68,7 @@ function BrokerInfoPage() {
       .catch((error) => {
         alert(error);
       });
-  }, []);
+  }, [id]);
 
   const displayProperties = properties.map((property) => {
     if (Array.isArray(property.Pictures) && property.Pictures.length > 0) {
