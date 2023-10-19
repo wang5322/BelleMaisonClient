@@ -46,9 +46,11 @@ function OffcanvasNavbar() {
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/brokerList">FindBroker</Nav.Link>
                 {/* <Nav.Link href="#action2">Search</Nav.Link> */}
-                {authState.status && authState.role === "broker" && (
-                  <Nav.Link href="/postProperty">PostProperty</Nav.Link>
-                )}
+                {authState.status &&
+                  authState.role === "broker" &&
+                  authState.approval === 1 && (
+                    <Nav.Link href="/postProperty">PostProperty</Nav.Link>
+                  )}
 
                 {/* <NavDropdown
                   title="More"
