@@ -94,7 +94,7 @@ function AdminUser() {
             return (
               <tr>
                 <td>{value.id}</td>
-                <td>{value.name}</td>
+                <td><Link to={`/broker/${value.id}` } style={{ color: 'black', textDecoration: 'none' }}>{value.name}</Link></td>
                 <td>{value.email}</td>
                 <td>{value.phone}</td>
                 <td>{value.role}</td>
