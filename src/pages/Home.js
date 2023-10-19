@@ -107,7 +107,7 @@ function Home() {
             sortedData = [...result].sort((a, b) => {
                 const dateA = new Date(a.createdAt);
                 const dateB = new Date(b.createdAt);
-                return dateA - dateB;
+                return dateB - dateA;
             });
             
         }
@@ -115,7 +115,7 @@ function Home() {
             sortedData = [...result].sort((a, b) => {
                 const dateA = new Date(a.createdAt);
                 const dateB = new Date(b.createdAt);
-                return dateB - dateA;
+                return dateA - dateB;
             });
             
         }
