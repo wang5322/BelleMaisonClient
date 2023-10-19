@@ -92,7 +92,7 @@ function PostProperty() {
         );
 
         setFiles([]);
-        Navigate(`/property/${propertyId}`);
+        Navigate(`/myProfile/broker`);
       } catch (error) {
         if (error.response && error.response.data.message) {
           // TODO: Replace with modal

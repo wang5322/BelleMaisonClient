@@ -14,7 +14,7 @@ function OffcanvasNavbar() {
   const navigate = useNavigate();
 
   const logout = () => {
-    navigate('/');
+    navigate("/");
     localStorage.removeItem("accessToken");
     setAuthState({
       email: "",

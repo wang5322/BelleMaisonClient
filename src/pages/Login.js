@@ -32,7 +32,7 @@ function Login() {
             email: response.data.email,
             id: response.data.id,
             role: response.data.role,
-            approval: response.data.broker_approval,
+            approval: response.data.approval,
             status: true,
           });
           console.log("login page id saved as " + authState);
@@ -47,9 +47,9 @@ function Login() {
 
   return (
     <main className="main-content">
-    <div className="centerContainer">
-      <h2>Login</h2>
-      {/* <div className="formContainer">
+      <div className="centerContainer">
+        <h2>Login</h2>
+        {/* <div className="formContainer">
             <label>Username:</label>
             <input className="inputCreatePost" type="text" onChange={(event) => {setUsername(event.target.value);}}/>
             <label>Password:</label>
@@ -57,33 +57,36 @@ function Login() {
 
             <button onClick={login}> Login </button>
         </div> */}
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
-        <Form className="formContainer">
-          <label>Email: </label>
-          <ErrorMessage name="email" component="span" className="spanred" />
-          <Field
-            className="inputCreatePost"
-            name="email"
-            placeholder="Ex. 123@abc.com"
-          />
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validationSchema={validationSchema}
+        >
+          <Form className="formContainer">
+            <label>Email: </label>
+            <ErrorMessage name="email" component="span" className="spanred" />
+            <Field
+              className="inputCreatePost"
+              name="email"
+              placeholder="Ex. 123@abc.com"
+            />
 
-          <label>password: </label>
-          <ErrorMessage name="password" component="span" className="spanred" />
-          <Field
-            className="inputCreatePost"
-            type="password"
-            name="password"
-            placeholder="Your password "
-          />
-          <button type="submit">Login</button>
-        </Form>
-      </Formik>
-      
-    </div>
+            <label>password: </label>
+            <ErrorMessage
+              name="password"
+              component="span"
+              className="spanred"
+            />
+            <Field
+              className="inputCreatePost"
+              type="password"
+              name="password"
+              placeholder="Your password "
+            />
+            <button type="submit">Login</button>
+          </Form>
+        </Formik>
+      </div>
     </main>
   );
 }
