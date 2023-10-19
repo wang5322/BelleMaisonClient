@@ -55,7 +55,6 @@ function PropUpdateImageList({ pictures, setPictures }) {
                 <Card.Body className="justify-content-end">
                   <Button
                     variant="outline-danger"
-                    type="submit"
                     onClickCapture={() => {
                       deleteImage(picture.id);
                     }}

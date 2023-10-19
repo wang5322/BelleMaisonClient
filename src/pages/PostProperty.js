@@ -5,8 +5,10 @@ import { Card } from "react-bootstrap";
 import Axios from "axios";
 import * as Yup from "yup";
 import UploadPropForm from "../components/UploadPropForm";
+import { useNavigate } from "react-router-dom";
 
 function PostProperty() {
+  const Navigate = useNavigate();
   const [files, setFiles] = useState([]);
 
   const fileSelected = (event) => {
@@ -81,11 +83,16 @@ function PostProperty() {
         const propertyId = response.data.id;
         formData.append("propertyId", propertyId);
 
-        await Axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        await Axios.post(
+          `${process.env.REACT_APP_HOST_URL}/api/pictures`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
         setFiles([]);
+        Navigate(`/property/${propertyId}`);
       } catch (error) {
         if (error.response && error.response.data.message) {
           // TODO: Replace with modal

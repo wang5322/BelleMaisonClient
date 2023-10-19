@@ -29,11 +29,13 @@ function BrokerProfile() {
       reader.onloadend = () => {
         // Set the selected image to the data URL
         setSelectedImage(reader.result);
+        console.log("the end of handleImageChagne");
       };
     }
   };
 
   const uploadFiles = (isCertificate) => {
+    console.log("button clicked=====");
     if (files && files.length > 0) {
       const formData = new FormData();
 
@@ -52,7 +54,7 @@ function BrokerProfile() {
       })
         .then((response) => {
           console.log("pictureId", response.data.id);
-          window.location.reload();
+          // window.location.reload();
         })
         .catch((error) => {
           if (error.response.data.message) {
@@ -390,7 +392,6 @@ function BrokerProfile() {
                 <Button
                   variant="dark"
                   className="mx-2"
-                  type="submit"
                   onClick={() => uploadFiles(1)}
                 >
                   Submit certificates
