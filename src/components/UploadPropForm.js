@@ -221,8 +221,8 @@ function UploadPropForm({ formik, onFileSelected, property }) {
             {/* Lot area */}
             <Col md="6">
               <Form.Group className="mb-3" controlId="form.lotArea">
-                <Form.Label>Lot Area:</Form.Label>
-                <FloatingLabel label="Lot Area" className="mb-3">
+                <Form.Label>Lot Area(sqft):</Form.Label>
+                <FloatingLabel label="Lot Area(sqft)" className="mb-3">
                   <Form.Control
                     type="text"
                     name="lotArea"
