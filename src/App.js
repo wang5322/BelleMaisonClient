@@ -88,6 +88,7 @@ function App() {
             <Route path="/admin/users" exact element={<AdminUser />} />
             <Route path="/admin/properties" exact element={<AdminProperty />} />
             <Route path="/broker/:id" exact element={<BrokerInfoPage />} />
+            {/* <Route path="/authenticate/facebook" exact element={}/> */}
           </Routes>
         </Router>
         <footer id="footer">
