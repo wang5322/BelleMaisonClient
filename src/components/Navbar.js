@@ -6,12 +6,15 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { AuthContext } from "../helpers/AuthContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 
 function OffcanvasNavbar() {
   const { setAuthState } = useContext(AuthContext);
   const { authState } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const logout = () => {
+    navigate('/');
     localStorage.removeItem("accessToken");
     setAuthState({
       email: "",

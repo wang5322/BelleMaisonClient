@@ -64,9 +64,11 @@ function App() {
   return (
     <div className="app-container">
       <AuthContext.Provider value={{ authState, setAuthState }}>
-        {/* <Navbar /> */}
-        <Navbar2 />
+        
+        
         <Router>
+          {/* <Navbar /> */}
+          <Navbar2 />
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/testPicture" exact element={<TestPicture />} />
