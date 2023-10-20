@@ -4,13 +4,19 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
+import Alert from 'react-bootstrap/Alert';
 import "./Admin.css";
 import { Link } from "react-router-dom";
 
 function AdminUser() {
   const [userList, setUserList] = useState([]);
   const [brokerApproval, setBrokerApproval] = useState(0);
-  const [activeUser, setActiveUser]=useState(1);
+  const [activeUser, setActiveUser] = useState(1);
+  const [message, setMessage] = useState(null);
+  const showAlert = (message) => {
+    setMessage(message);
+    // setTimeout(() => setMessage(null), 3000);
+  };
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_HOST_URL}/api/users`)
@@ -19,54 +25,57 @@ function AdminUser() {
       })
       .catch((err) => {
         if (err.response.data.status !== 404) {
-          alert("no records found!");
+          showAlert("no records found!");
           return;
         }
       });
-  }, [brokerApproval]);
+  }, [brokerApproval, activeUser]);
+ 
 
-  const approve = (userid) => {
+  const approve = (userid, approvalStatus) => {
     axios
       .patch(
         `${process.env.REACT_APP_HOST_URL}/api/users/admin/update`,
-        { id: userid, broker_approval: 1 },
+        { id: userid, broker_approval: approvalStatus },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
       .then((res) => {
         if (res.data.error) {
-          alert("error in approving user");
+         showAlert("error in approving user");
           return;
         }
         console.log(res);
         setBrokerApproval(brokerApproval + 1);
-        alert("user is approved");
+        showAlert("user status is updated");
       })
       .catch((err) => {
-        alert("error in approving user");
+        showAlert("error in approving user");
       });
   };
-  const deactive = (userid) => {
+  const deactive = (userid, activeStatus) => {
     axios
       .patch(
         `${process.env.REACT_APP_HOST_URL}/api/users/admin/update`,
-        { id: userid, is_active: 0 },
+        { id: userid, is_active: activeStatus },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
       .then((res) => {
         if (res.data.error) {
-          alert("error in approving user");
+          showAlert("error in approving user");
           return;
         }
         console.log(res);
         setActiveUser(activeUser + 1);
-        alert("user is deactived");
+        showAlert("user status is updated");
       })
       .catch((err) => {
-        alert("error in deactive user");
+        showAlert("error in deactive user");
       });
   }
   return (
+    
     <div className="adminTable">
+  {message && <Alert variant="danger" onClose={() => setMessage(null)} dismissible>{message}</Alert>}
       <Row>
         <Col>
           <h1>User Management</h1>
@@ -77,7 +86,7 @@ function AdminUser() {
           </h2>
         </Col>
       </Row>
-
+    
       <Table responsive bordered hover className="userTable">
         <thead>
           <tr>
@@ -94,7 +103,7 @@ function AdminUser() {
             return (
               <tr>
                 <td>{value.id}</td>
-                <td><Link to={`/broker/${value.id}` } style={{ color: 'black', textDecoration: 'none' }}>{value.name}</Link></td>
+                <td><Link to={`/broker/${value.id}`} style={{ color: 'black', textDecoration: 'none' }}>{value.name}</Link></td>
                 <td>{value.email}</td>
                 <td>{value.phone}</td>
                 <td>{value.role}</td>
@@ -106,20 +115,49 @@ function AdminUser() {
                 <td>{value.broker_approval}</td>
 
                 <td>
-                  <Button
-                    variant="outline-success"
-                    onClick={() => {
-                      approve(value.id);
-                    }}
-                  >
-                    Approve
-                  </Button>
+
+                  {value.broker_approval === 0 ? (
+                    <Button
+                      variant="success"
+                      onClick={() => {
+                        approve(value.id, 1);
+                      }}
+                    >
+                      Approve
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline-success"
+                      onClick={() => {
+                        approve(value.id, 0);
+                      }}
+                    >
+                      Disapprove
+                    </Button>
+                  )}
                 </td>
-                {/* <td><Button variant="outline-warning">Approve</Button></td> */}
+
                 <td>
-                  <Button variant="outline-danger" onClick={()=>{
-                    deactive(value.id);
-                  }}>Deactive</Button>
+                {!value.is_active ? (
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => {
+                        deactive(value.id, 1);
+                      }}
+                    >
+                      Active
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="danger"
+                      onClick={() => {
+                        deactive(value.id, 0);
+                      }}
+                    >
+                      deactive
+                    </Button>
+                  )}
+
                 </td>
               </tr>
             );
