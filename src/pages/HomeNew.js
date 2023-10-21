@@ -65,34 +65,35 @@ console.log("resetChange");
 
     //set up search string
     function onSearchabc( searchCriteria ){
-console.log("in onSearchabc: searchCriteria",searchCriteria);
-        let str = '';
+//console.log("in onSearchabc: searchCriteria",searchCriteria);
+        let str = searchString;
         //setSearchCriteria(searchCriteria);
         if(isObjectEmpty(searchCriteria)){
             //console.log("searchCriteria is empty:");
         }else{
+            
             if(!searchCriteria.bedrooms ==''){
-                str = searchString + `,bedrooms:${searchCriteria.bedrooms}`;
+                str = str + `,bedrooms:${searchCriteria.bedrooms}`;
             }
             if(!searchCriteria.bathrooms ==''){
-                str = searchString + `,bathrooms:${searchCriteria.bathrooms}`;
+                str = str + `,bathrooms:${searchCriteria.bathrooms}`;
             }
             if(!searchCriteria.minPrice ==''){
-                str = searchString + `,minPrice:${searchCriteria.minPrice}`;
+                str = str + `,minPrice:${searchCriteria.minPrice}`;
             }
             if(!searchCriteria.maxPrice ==''){
-                str = searchString + `,maxPrice:${searchCriteria.maxPrice}`;
+                str = str + `,maxPrice:${searchCriteria.maxPrice}`;
             }
             if(!searchCriteria.yearBuilt ==''){
-                str = searchString + `,built_year:${searchCriteria.yearBuilt}`;
+                str = str + `,built_year:${searchCriteria.yearBuilt}`;
             }
             if(!searchCriteria.propertyType ==''){
-                str = searchString + `,type:${searchCriteria.propertyType}`;
+                str = str + `,type:${searchCriteria.propertyType}`;
+
             }
         }
         //console.log("before in onSearchabc: searchCriteria",searchCriteria);
         setSearchString(str);
-        //console.log("after in onSearchabc: searchCriteria",searchCriteria);
     }
 
     function isObjectEmpty(obj) {
