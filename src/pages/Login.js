@@ -2,12 +2,17 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import "./Users.css";
 
 function Login() {
   const { authState, setAuthState } = useContext(AuthContext);
+  //facebook login
+  const facebook = () => {
+    window.open(`${process.env.REACT_APP_HOST_URL}/auth/facebook`, "_self");
+  };
 
   const initialValues = {
     email: "",
@@ -48,8 +53,9 @@ function Login() {
   return (
     <main className="main-content">
       <div className="centerContainer">
-        <h2>Login</h2>
-        {/* <div className="formContainer">
+        <h2 className="m-3">Choose a Login Method</h2>
+        <div className="wrapper">
+          {/* <div className="formContainer">
             <label>Username:</label>
             <input className="inputCreatePost" type="text" onChange={(event) => {setUsername(event.target.value);}}/>
             <label>Password:</label>
@@ -57,35 +63,48 @@ function Login() {
 
             <button onClick={login}> Login </button>
         </div> */}
-        <Formik
-          initialValues={initialValues}
-          onSubmit={onSubmit}
-          validationSchema={validationSchema}
-        >
-          <Form className="formContainer">
-            <label>Email: </label>
-            <ErrorMessage name="email" component="span" className="spanred" />
-            <Field
-              className="inputCreatePost"
-              name="email"
-              placeholder="Ex. 123@abc.com"
-            />
+          <div className="left">
+            <div className="loginButton facebook" onClick={facebook}>
+              <FacebookIcon />
+              Facebook
+            </div>
+          </div>
+          <div className="center">
+            <div className="line" />
+            <div className="or">OR</div>
+          </div>
+          <div className="right">
+            <Formik
+              initialValues={initialValues}
+              onSubmit={onSubmit}
+              validationSchema={validationSchema}
+            >
+              <Form className="formContainer">
+                <label>Email: </label>
+                <ErrorMessage name="email" component="span" className="spanred" />
+                <Field
+                  className="inputCreatePost"
+                  name="email"
+                  placeholder="Ex. 123@abc.com"
+                />
 
-            <label>password: </label>
-            <ErrorMessage
-              name="password"
-              component="span"
-              className="spanred"
-            />
-            <Field
-              className="inputCreatePost"
-              type="password"
-              name="password"
-              placeholder="Your password "
-            />
-            <button type="submit">Login</button>
-          </Form>
-        </Formik>
+                <label>password: </label>
+                <ErrorMessage
+                  name="password"
+                  component="span"
+                  className="spanred"
+                />
+                <Field
+                  className="inputCreatePost"
+                  type="password"
+                  name="password"
+                  placeholder="Your password "
+                />
+                <button type="submit">Login</button>
+              </Form>
+            </Formik>
+          </div>
+        </div>
       </div>
     </main>
   );
