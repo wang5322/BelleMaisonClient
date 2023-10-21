@@ -6,7 +6,7 @@ import Card from "../components/MDBCard";
 import Sorting from "../components/Sorting";
 import Pagination from "../components/Pagination";
 
-function Home() {
+function HomeNew() {
 
      //minPrice,maxPrice,propertyType,bedrooms,bathrooms,yearBuilt,
     const initSearch={
@@ -30,7 +30,7 @@ function Home() {
 
     useEffect(() => {
         axios
-            .get(`${process.env.REACT_APP_HOST_URL}/api/properties?page=${currentPage}&pageSize=${articlesPerPage}&searchString=${searchString}`)
+            .get(`${process.env.REACT_APP_HOST_URL}/api/properties/search?page=${currentPage}&pageSize=${articlesPerPage}&searchString=${searchString}`)
             .then((response) => {
                 setListOfProperties(response.data.properties);
                 setTotalCount(response.data.totalCount);
@@ -221,4 +221,4 @@ console.log("in onSearchabc: searchCriteria",searchCriteria);
     </>
   );
 }
-export default Home;
+export default HomeNew;

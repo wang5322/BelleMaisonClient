@@ -5,7 +5,8 @@ import TestPicture from "./pages/TestPicture";
 import SingleProperty from "./pages/SingleProperty";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
-import Home from "./pages/HomeNew";
+import Home from "./pages/Home";
+import HomeNew from "./pages/HomeNew";
 import PostProperty from "./pages/PostProperty";
 import BrokerList from "./pages/BrokerList";
 import BuyerProfile from "./pages/BuyerProfile";
@@ -68,8 +69,9 @@ function App() {
           {/* <Navbar /> */}
           <Navbar2 />
           <Routes>
-            <Route path="/" exact element={<Home />} />
+            <Route path="/" exact element={<HomeNew />} />
             <Route path="/testPicture" exact element={<TestPicture />} />
+            <Route path="/home" exact element={<Home />} />
             <Route path="/property/:id" exact element={<SingleProperty />} />
             <Route path="/register" exact element={<Registration />} />
             <Route path="/login" exact element={<Login />} />
