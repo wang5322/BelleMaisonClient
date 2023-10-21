@@ -6,14 +6,21 @@ import Axios from "axios";
 import * as Yup from "yup";
 import UploadPropForm from "../components/UploadPropForm";
 import { useNavigate } from "react-router-dom";
+import imageFileResizer from "../helpers/ImageFileResizer";
 
 function PostProperty() {
   const Navigate = useNavigate();
   const [files, setFiles] = useState([]);
+  const [galleryFiles, setGalleryFiles] = useState([]);
 
   const fileSelected = (event) => {
     const selectedFiles = Array.from(event.target.files);
     setFiles(selectedFiles);
+  };
+
+  const MultipleFileSelected = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setGalleryFiles(selectedFiles);
   };
 
   const formik = useFormik({
@@ -66,10 +73,26 @@ function PostProperty() {
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
+      const galleryFormData = new FormData();
+      //resize to thumbnail
+      for (const file of files) {
+        const resizedImage = await imageFileResizer(file, 450, 400, 100, 0);
+        formData.append("images", resizedImage);
+        console.log("=====resizedImage=====", resizedImage);
+      }
 
-      files.forEach((file) => {
-        formData.append("images", file);
-      });
+      //resize pictures in gallery
+      for (const galleryFile of galleryFiles) {
+        const resizedImage = await imageFileResizer(
+          galleryFile,
+          900,
+          900,
+          100,
+          0
+        );
+        galleryFormData.append("images", resizedImage);
+        console.log("=====resizedImage=====", resizedImage);
+      }
       console.log("button clicked");
       console.log("Property values are:", values);
 
@@ -84,8 +107,17 @@ function PostProperty() {
         formData.append("propertyId", propertyId);
 
         await Axios.post(
-          `${process.env.REACT_APP_HOST_URL}/api/pictures`,
+          `${process.env.REACT_APP_HOST_URL}/api/pictures/addThumbnail`,
           formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        galleryFormData.append("propertyId", propertyId);
+        await Axios.post(
+          `${process.env.REACT_APP_HOST_URL}/api/pictures`,
+          galleryFormData,
           {
             headers: { "Content-Type": "multipart/form-data" },
           }
@@ -119,6 +151,7 @@ function PostProperty() {
                 <UploadPropForm
                   formik={formik}
                   onFileSelected={fileSelected}
+                  onMultipleFileSelected={MultipleFileSelected}
                 ></UploadPropForm>
                 <div className="px-2 justify-content-start py-4">
                   <Button variant="info" className="col-md-3" type="Submit">

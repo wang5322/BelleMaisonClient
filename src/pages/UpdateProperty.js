@@ -7,16 +7,25 @@ import * as Yup from "yup";
 import UploadPropForm from "../components/UploadPropForm";
 import { useParams } from "react-router-dom";
 import PropUpdateImageList from "../components/PropUpdateImageList";
+import imageFileResizer from "../helpers/ImageFileResizer";
 
 function UpdateProperty() {
   let { id } = useParams();
   const [files, setFiles] = useState([]);
+  const [galleryFiles, setGalleryFiles] = useState([]);
   const [property, setProperty] = useState({});
-  const [pictures, setPictures] = useState([]);
+  // const [pictures, setPictures] = useState([]);
+  const [thumbnail, setThumbnail] = useState([]);
+  const [galleryPics, setGalleryPics] = useState([]);
 
   const fileSelected = (event) => {
     const selectedFiles = Array.from(event.target.files);
     setFiles(selectedFiles);
+  };
+
+  const MultipleFileSelected = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setGalleryFiles(selectedFiles);
   };
 
   const formik = useFormik({
@@ -69,28 +78,56 @@ function UpdateProperty() {
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
+      const galleryFormData = new FormData();
+      //resize to thumbnail
+      for (const file of files) {
+        const resizedImage = await imageFileResizer(file, 450, 400, 100, 0);
+        formData.append("images", resizedImage);
+        console.log("=====resizedImage=====", resizedImage);
+      }
 
-      files.forEach((file) => {
-        formData.append("images", file);
-      });
-      // console.log("button clicked");
-      // console.log("Property values are:", values);
-      // TODO: use update
+      //resize pictures in gallery
+      for (const galleryFile of galleryFiles) {
+        const resizedImage = await imageFileResizer(
+          galleryFile,
+          900,
+          900,
+          100,
+          0
+        );
+        galleryFormData.append("images", resizedImage);
+        console.log("=====resizedImage=====", resizedImage);
+      }
+      console.log("button clicked");
+      console.log("Property values are:", values);
+
       try {
         await Axios.put(
           `${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`,
           values,
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         );
-        if (files) {
+        if (files || galleryFiles) {
           console.log("Property Id is", id);
           const propertyId = id;
           formData.append("propertyId", propertyId);
+          galleryFormData.append("propertyId", propertyId);
 
-          await Axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
+          await Axios.post(
+            `${process.env.REACT_APP_HOST_URL}/api/pictures/addThumbnail`,
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
 
+          await Axios.post(
+            `${process.env.REACT_APP_HOST_URL}/api/pictures`,
+            galleryFormData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
           setFiles([]);
           window.location.reload();
         }
@@ -122,7 +159,14 @@ function UpdateProperty() {
       headers: { accessToken: localStorage.getItem("accessToken") },
     })
       .then((response) => {
-        setPictures(response.data);
+        //seperate the thumbnail and original images
+        const thumbnail = response.data.filter((pic) => pic.isThumb === true);
+        const gallery = response.data.filter((pic) => pic.isThumb === false);
+        console.log("=====thumbnail=====", thumbnail);
+        console.log("=====gallery=====", gallery);
+        // setPictures(response.data);
+        setThumbnail(thumbnail);
+        setGalleryPics(gallery);
       })
       .catch((error) => {
         if (error.response.data.message) {
@@ -149,6 +193,8 @@ function UpdateProperty() {
                   formik={formik}
                   onFileSelected={fileSelected}
                   property={property}
+                  onMultipleFileSelected={MultipleFileSelected}
+                  hasThumbnail={thumbnail.length > 0 ? true : false}
                 ></UploadPropForm>
 
                 <div className="px-2 justify-content-start py-4">
@@ -158,8 +204,14 @@ function UpdateProperty() {
                 </div>
               </Form>
               <PropUpdateImageList
-                pictures={pictures}
-                setPictures={setPictures}
+                pictures={thumbnail}
+                setPictures={setThumbnail}
+                type="thumbnail"
+              ></PropUpdateImageList>
+              <PropUpdateImageList
+                pictures={galleryPics}
+                setPictures={setGalleryPics}
+                type="gallery"
               ></PropUpdateImageList>
             </Card>
           </Col>
