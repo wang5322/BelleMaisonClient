@@ -5,7 +5,7 @@ import TestPicture from "./pages/TestPicture";
 import SingleProperty from "./pages/SingleProperty";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Home from "./pages/HomeNew";
 import PostProperty from "./pages/PostProperty";
 import BrokerList from "./pages/BrokerList";
 import BuyerProfile from "./pages/BuyerProfile";
