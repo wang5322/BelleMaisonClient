@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import PhoneIcon from "@mui/icons-material/Phone";
-import MailIcon from "@mui/icons-material/Mail";
 import BrokerCard from "../components/BrokerCard";
 
 function BrokerList() {
   const [brokerList, setBrokerList] = useState([]);
-  const [profile, setProfile] = useState({});
-  const [certificates, setCertificates] = useState([]);
 
   useEffect(() => {
     console.log("entered useEffect======");
@@ -30,6 +22,8 @@ function BrokerList() {
                 response.data[j].Pictures[i] = response.data[j].Pictures[0];
                 response.data[j].Pictures[0] = temp;
                 break; // Break out of the loop after the swap
+              } else {
+                response.data[j].Pictures[0] = { imageUrl: "notFound" };
               }
             }
           }
