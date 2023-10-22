@@ -8,7 +8,7 @@ import { AuthContext } from "../helpers/AuthContext";
 import "./Users.css";
 
 function Login() {
-  const { authState, setAuthState } = useContext(AuthContext);
+  const { authState, setAuthState, setOTP} = useContext(AuthContext);
   //facebook login
   const facebook = () => {
     window.open(`${process.env.REACT_APP_HOST_URL}/auth/facebook`, "_self");
@@ -50,6 +50,23 @@ function Login() {
       });
   };
 
+  function nagigateToOtp() {
+    if (authState.email) {
+      const OTP = Math.floor(Math.random() * 9000 + 1000);
+      console.log(OTP);
+      setOTP(OTP);
+
+      axios
+        .post("http://localhost:3005/users/send_recovery_email", {
+          OTP,
+          recipient_email: authState.email,
+        })
+        .then(() => navigate("/users/otpInput"))
+        .catch(console.log);
+      return;
+    }
+    return alert("Please enter your email"); 
+  }
   return (
     <main className="main-content">
       <div className="centerContainer">
@@ -100,6 +117,14 @@ function Login() {
                   name="password"
                   placeholder="Your password "
                 />
+
+                  <a
+                    href="#"
+                    onClick={() => nagigateToOtp()}
+                    className="text-gray-800"
+                  >
+                    Forgot password?
+                  </a>
                 <button type="submit">Login</button>
               </Form>
             </Formik>

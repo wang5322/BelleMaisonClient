@@ -23,6 +23,8 @@ import AppFooter from "./components/Footer";
 
 import UpdateProperty from "./pages/UpdateProperty";
 import BrokerInfoPage from "./pages/BrokerInfoPage";
+import OTPInput from "./pages/OTPInput";
+import ResetPass from "./pages/ResetPass";
 
 function App() {
   const [authState, setAuthState] = useState({
@@ -32,6 +34,7 @@ function App() {
     approval: 0,
     status: false,
   });
+  const [otp, setOTP] = useState();
 
   // useEffect(() => {
   //   // This effect will run whenever authState changes
@@ -64,7 +67,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <AuthContext.Provider value={{ authState, setAuthState }}>
+      <AuthContext.Provider value={{ authState, setAuthState, otp, setOTP }}>
         <Router>
           {/* <Navbar /> */}
           <Navbar2 />
@@ -88,6 +91,8 @@ function App() {
             <Route path="/admin/users" exact element={<AdminUser />} />
             <Route path="/admin/properties" exact element={<AdminProperty />} />
             <Route path="/broker/:id" exact element={<BrokerInfoPage />} />
+            <Route path="/users/otpInput" exact element={<OTPInput />} />
+            <Route path="/users/resetPass" exact element={<ResetPass />} />
             {/* <Route path="/authenticate/facebook" exact element={}/> */}
           </Routes>
         </Router>
