@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Switch is replaced by Routes
+import { useCookies } from "react-cookie";
 import TestPicture from "./pages/TestPicture";
 import SingleProperty from "./pages/SingleProperty";
 import Registration from "./pages/Registration";
@@ -33,6 +34,8 @@ function App() {
     status: false,
   });
 
+  const [cookies, setCookie] = useCookies();
+
   // useEffect(() => {
   //   // This effect will run whenever authState changes
   //   console.log('======authState has changed:==========', authState);
@@ -44,7 +47,7 @@ function App() {
     axios
       .get(`${process.env.REACT_APP_HOST_URL}/api/users/auth`, {
         headers: {
-          accessToken: localStorage.getItem("accessToken"),
+          accessToken: cookies.token ? cookies.token : localStorage.getItem("accessToken"),
         },
       })
       .then((response) => {
