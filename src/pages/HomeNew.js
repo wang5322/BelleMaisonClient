@@ -134,37 +134,41 @@ function HomeNew() {
             className="p-5 text-center bg-image"
             style={{
               backgroundImage:
-                "url('https://images.pexels.com/photos/7579042/pexels-photo-7579042.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')",
+                "url('https://www.omnihotels.com/-/media/images/hotels/mondtn/digex/carousel/mondtn_10_2880x1870.jpg?la=en&h=1286&w=1980&mw=1980&hash=4EE7E30DEA2A0A84C15310CB4F2EB9E736C244E6')",
               // style={{ backgroundImage: "url('../images/heroImage.jpg')",
-              height: 400,
+              height: 500,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
+              backgroundPosition: "center calc(50% - 3px)",
             }}
           >
             <div
-              className="mask"
+              className="mask "
               style={{
                 backgroundColor: "rgba(0, 0, 0, 0.4)",
                 borderRadius: "10px",
               }}
             >
               <div className="d-flex justify-content-center align-items-center h-500">
-                <div className="text-white mb-5">
+                <div className="text-white mb-5  mt-5">
                   <h1 className="mt-5">{totalCount} properties in Quebec</h1>
-                  <SearchBar
-                    style={{
-                      position: "absolute",
-                      bottom: "0",
-                      left: "0",
-                      right: "0",
-                    }}
-                    placeholder="Please input city..."
-                    properties={listOfProperties}
-                    searchCriteria={searchCriteria}
-                    handleCityChange={handleCityChange}
-                    resetChange={resetChange}
-                    onSearch={onSearchabc}
-                  />
+                  <div className="mt-5">
+                    {" "}
+                    <SearchBar
+                      style={{
+                        position: "absolute",
+                        bottom: "0",
+                        left: "0",
+                        right: "0",
+                      }}
+                      placeholder="Please input city..."
+                      properties={listOfProperties}
+                      searchCriteria={searchCriteria}
+                      handleCityChange={handleCityChange}
+                      resetChange={resetChange}
+                      onSearch={onSearchabc}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
