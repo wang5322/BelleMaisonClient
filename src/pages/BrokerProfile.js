@@ -73,14 +73,19 @@ function BrokerProfile() {
   };
 
   const displayProperties = properties.map((property) => {
-    if (Array.isArray(property.Pictures) && property.Pictures.length > 0) {
-      // Access the first picture's imageUrl
-      const imageUrl = property.Pictures[0].imageUrl;
+    const thumbnailPic = property.Pictures.filter(
+      (picture) => picture.isThumb === true
+    );
+    const thumbnailUrl =
+      thumbnailPic.length > 0 ? thumbnailPic[0].imageUrl : null;
+    console.log("====thumbnailUrl====", thumbnailUrl);
+
+    if (thumbnailUrl) {
       return (
         <MDBCard
           key={property.id}
           id={property.id}
-          img={imageUrl}
+          img={thumbnailUrl}
           address={property.address}
           city={property.city}
           type={property.type}
