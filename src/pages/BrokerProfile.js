@@ -80,7 +80,8 @@ function BrokerProfile() {
       thumbnailPic.length > 0 ? thumbnailPic[0].imageUrl : null;
     console.log("====thumbnailUrl====", thumbnailUrl);
 
-    if (thumbnailUrl) {
+    if (thumbnailUrl) 
+    {
       return (
         <MDBCard
           key={property.id}
