@@ -4,6 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { useCookies } from "react-cookie";
 import { AuthContext } from "../helpers/AuthContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
@@ -12,9 +13,11 @@ function OffcanvasNavbar() {
   const { setAuthState } = useContext(AuthContext);
   const { authState } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const logout = () => {
     navigate("/");
+    removeCookie("token", { path: "/" });
     localStorage.removeItem("accessToken");
     setAuthState({
       email: "",
