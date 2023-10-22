@@ -6,13 +6,21 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import "./Users.css";
+import ModalMessage from "../components/ModalMessage";
 
 function Login() {
-  const { authState, setAuthState, setOTP} = useContext(AuthContext);
+  const { authState, setAuthState, setOTP } = useContext(AuthContext);
   //facebook login
   // const facebook = () => {
   //   window.open(`${process.env.REACT_APP_HOST_URL}/auth/facebook`, "_self");
   // };
+
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
 
   const initialValues = {
     email: "",
@@ -30,7 +38,7 @@ function Login() {
       .post(`${process.env.REACT_APP_HOST_URL}/api/users/login`, data)
       .then((response) => {
         if (response.data.error) {
-          alert(response.data.error);
+          handleShow(response.data.error);
         } else {
           localStorage.setItem("accessToken", response.data.token);
           setAuthState({
@@ -65,14 +73,14 @@ function Login() {
         .catch(console.log);
       return;
     }
-    return alert("Please enter your email"); 
+    return handleShow("Please enter your email");
   }
   return (
     <main className="main-content">
       <div className="centerContainer">
-        <h2 className="m-3">Choose a Login Method</h2> 
+        <h2 className="m-3">Choose a Login Method</h2>
         <div className="wrapper">
-           {/*<div className="formContainer">
+          {/*<div className="formContainer">
             <label>Username:</label>
             <input className="inputCreatePost" type="text" onChange={(event) => {setUsername(event.target.value);}}/>
             <label>Password:</label>
@@ -99,7 +107,11 @@ function Login() {
             >
               <Form className="formContainer">
                 <label>Email: </label>
-                <ErrorMessage name="email" component="span" className="spanred" />
+                <ErrorMessage
+                  name="email"
+                  component="span"
+                  className="spanred"
+                />
                 <Field
                   className="inputCreatePost"
                   name="email"
@@ -119,18 +131,20 @@ function Login() {
                   placeholder="Your password "
                 />
 
-                  <a
-                    href="#"
-                    onClick={() => nagigateToOtp()}
-                    className="text-gray-800"
-                  >
-                    Forgot password?
-                  </a>
+                <a
+                  href="#"
+                  onClick={() => nagigateToOtp()}
+                  className="text-gray-800"
+                >
+                  Forgot password?
+                </a>
                 <button type="submit">Login</button>
               </Form>
             </Formik>
           </div>
         </div>
+        {/* Modal message rendering */}
+        <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
       </div>
     </main>
   );
