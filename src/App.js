@@ -44,10 +44,13 @@ function App() {
   // }, [authState]);
 
   useEffect(() => {
+    // get token from cookie and set to local storage
+    if (cookies.token) { localStorage.setItem("accessToken", cookies.token);}
+
     axios
       .get(`${process.env.REACT_APP_HOST_URL}/api/users/auth`, {
         headers: {
-          accessToken: cookies.token ? cookies.token : localStorage.getItem("accessToken"),
+          accessToken: localStorage.getItem("accessToken"),
         },
       })
       .then((response) => {
