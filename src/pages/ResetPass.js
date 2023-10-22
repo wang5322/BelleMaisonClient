@@ -1,88 +1,95 @@
 import React from "react";
+import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
 import { useNavigate } from "react-router-dom";
+import "./Users.css";
+import { useState } from "react";
+import { Modal,Button } from "react-bootstrap";
 
 export default function ResetPass() {
-
+    const { email } = useContext(AuthContext);
     let navigate = useNavigate();
-  //const { setPage } = useContext(AuthContext);
-  function changePassword() {
-    navigate("users/recovered");
-  }
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    //Error Modal section
+    const [show, setShow] = useState({ error: "", status: false });
+    const handleClose = () => setShow({ error: "", status: false });
+    const handleShow = (errorMessage) =>
+    setShow({ error: errorMessage, status: true });
+
+    function changePassword() {
+        console.log("change password");
+        if(password!==confirmPassword){
+            setErrorMessage('Password not match!'); // Set the error message
+            return;
+        }
+        axios
+            .patch(`${process.env.REACT_APP_HOST_URL}/api/users/resetpass`,
+                { email: email, password: password },
+            )
+            .then((response) => {
+                if (response.data.error) {
+                    console.log(response.data.error);
+                } else {
+                    handleShow("Your password succesfully set, you can login now")
+                    navigate("/users/login");
+                }
+            });
+        
+    }
 
   return (
-    <div>
-      <section>
-        <div>
-          <div>
-            <h2>
-              Change Password
-            </h2>
-            <form>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  required=""
-                ></input>
-              </div>
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Confirm password
-                </label>
-                <input
-                  type="password"
-                  name="confirm-password"
-                  id="confirm-password"
-                  placeholder="••••••••"
-                  required=""
-                ></input>
-              </div>
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="newsletter"
-                    aria-describedby="newsletter"
-                    type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                    required=""
-                  ></input>
+    <main className="main-content">
+        <div className="centerContainer">
+            <h2> Change Password</h2>
+            <div className="wrapper">
+                <div>
+                    <div>
+                        <div>
+                            <label htmlFor="password" className="pasLabel">
+                                New Password
+                            </label>
+                            <input onChange={(e) =>setPassword(e.target.value)} type="password" 
+                                name="password" id="password" placeholder="••••••••" required="">
+                            </input>
+                        </div>
+                        <div>
+                            <label htmlFor="confirm-password" className="pasLabel">
+                                Confirm password
+                            </label>
+                            <input onChange={(e) =>setConfirmPassword(e.target.value)} type="password"
+                                name="confirm-password" id="confirm-password" placeholder="••••••••" required="">
+                            </input>
+                        </div>
+                    </div>
+
+                    <div>
+                        {errorMessage&&<div className="spanred">{errorMessage}</div>}
+                        <button className="passBtn" onClick={() => changePassword()}> Reset passwod</button>
+                    </div>
                 </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="newsletter"
-                    className="font-light text-gray-500 dark:text-gray-300"
-                  >
-                    I accept the{" "}
-                    <a
-                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      href="#"
-                    >
-                      Terms and Conditions
-                    </a>
-                  </label>
-                </div>
-              </div>
-            </form>
-            <button
-              onClick={() => changePassword()}>
-              Reset passwod
-            </button>
-          </div>
+            </div>
+            
         </div>
-      </section>
-    </div>
+        {/* Modal rendering */}
+        <Modal show={show.status} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Oops!</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{show.error}</Modal.Body>
+            <Modal.Footer>
+                <Button
+                className="bluButton"
+                variant="secondary"
+                onClick={handleClose}
+                >
+                Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    </main>
   );
 }

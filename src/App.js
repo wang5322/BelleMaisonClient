@@ -15,6 +15,7 @@ import AdminProperty from "./pages/AdminProperty";
 import AdminUser from "./pages/AdminUser";
 import Navbar2 from "./components/Navbar";
 import PageNotFound from "./pages/PageNotFound";
+import Recovered from "./pages/Recovered";
 import { AuthContext } from "./helpers/AuthContext";
 import { useContext } from "react";
 import axios from "axios";
@@ -35,6 +36,7 @@ function App() {
     status: false,
   });
   const [otp, setOTP] = useState();
+  const [email, setEmail] = useState();
 
   // useEffect(() => {
   //   // This effect will run whenever authState changes
@@ -67,7 +69,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <AuthContext.Provider value={{ authState, setAuthState, otp, setOTP }}>
+      <AuthContext.Provider value={{ authState, setAuthState, otp, setOTP ,email, setEmail }}>
         <Router>
           {/* <Navbar /> */}
           <Navbar2 />
@@ -93,6 +95,7 @@ function App() {
             <Route path="/broker/:id" exact element={<BrokerInfoPage />} />
             <Route path="/users/otpInput" exact element={<OTPInput />} />
             <Route path="/users/resetPass" exact element={<ResetPass />} />
+            <Route path="/users/recovered" exact element={<Recovered />} />
             {/* <Route path="/authenticate/facebook" exact element={}/> */}
           </Routes>
         </Router>
