@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import UploadPropForm from "../components/UploadPropForm";
 import { useNavigate } from "react-router-dom";
 import imageFileResizer from "../helpers/ImageFileResizer";
+import ModalMessage from "../components/ModalMessage";
 
 function PostProperty() {
   const Navigate = useNavigate();
@@ -22,6 +23,13 @@ function PostProperty() {
     const selectedFiles = Array.from(event.target.files);
     setGalleryFiles(selectedFiles);
   };
+
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
 
   const formik = useFormik({
     initialValues: {
@@ -128,9 +136,9 @@ function PostProperty() {
       } catch (error) {
         if (error.response && error.response.data.message) {
           // TODO: Replace with modal
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert("There is an error occurred while uploading property");
+          handleShow("There is an error occurred while uploading property");
         }
       }
 
@@ -162,6 +170,8 @@ function PostProperty() {
             </Card>
           </Col>
         </Row>
+        {/* Modal message rendering */}
+        <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
       </Container>
     </React.Fragment>
   );

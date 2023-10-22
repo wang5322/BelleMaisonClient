@@ -8,6 +8,7 @@ import UploadPropForm from "../components/UploadPropForm";
 import { useParams } from "react-router-dom";
 import PropUpdateImageList from "../components/PropUpdateImageList";
 import imageFileResizer from "../helpers/ImageFileResizer";
+import ModalMessage from "../components/ModalMessage";
 
 function UpdateProperty() {
   let { id } = useParams();
@@ -27,6 +28,13 @@ function UpdateProperty() {
     const selectedFiles = Array.from(event.target.files);
     setGalleryFiles(selectedFiles);
   };
+
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
 
   const formik = useFormik({
     initialValues: {
@@ -134,9 +142,9 @@ function UpdateProperty() {
       } catch (error) {
         if (error.response && error.response.data.message) {
           // TODO: Replace with modal
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert("There is an error occurred while uploading property");
+          handleShow("There is an error occurred while uploading property");
         }
       }
     },
@@ -150,9 +158,9 @@ function UpdateProperty() {
       })
       .catch((error) => {
         if (error.response.data.message) {
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert(`There is an error occured while getting property ${id}`);
+          handleShow(`There is an error occured while getting property ${id}`);
         }
       });
     Axios.get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`, {
@@ -170,9 +178,9 @@ function UpdateProperty() {
       })
       .catch((error) => {
         if (error.response.data.message) {
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert(
+          handleShow(
             `There is an error occured while getting pictures for property ${id}`
           );
         }
@@ -208,14 +216,19 @@ function UpdateProperty() {
                 setPictures={setThumbnail}
                 type="thumbnail"
               ></PropUpdateImageList>
-              <PropUpdateImageList
-                pictures={galleryPics}
-                setPictures={setGalleryPics}
-                type="gallery"
-              ></PropUpdateImageList>
+              <div className="mb-5">
+                {" "}
+                <PropUpdateImageList
+                  pictures={galleryPics}
+                  setPictures={setGalleryPics}
+                  type="gallery"
+                ></PropUpdateImageList>
+              </div>
             </Card>
           </Col>
         </Row>
+        {/* Modal message rendering */}
+        <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
       </Container>
     </React.Fragment>
   );

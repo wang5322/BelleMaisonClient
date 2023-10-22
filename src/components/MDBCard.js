@@ -14,6 +14,7 @@ import BathtubIcon from "@mui/icons-material/Bathtub";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Axios from "axios";
+import ModalMessage from "../components/ModalMessage";
 
 const Card = ({
   id,
@@ -48,14 +49,21 @@ const Card = ({
     }
   };
 
-  
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+    window.location.reload();
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
+
   const formattedPrice = price
-    ? price.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'CAD',
+    ? price.toLocaleString("en-US", {
+        style: "currency",
+        currency: "CAD",
         maximumFractionDigits: 0,
       })
-    : 'Price not available'; 
+    : "Price not available";
 
   const toggleActivation = (propertyId) => {
     const newStatus = isActive == 1 ? 0 : 1;
@@ -66,17 +74,20 @@ const Card = ({
     )
       .then((response) => {
         if (response.data.error) {
-          alert("error in toggling property");
+          handleShow("error in toggling property");
           return;
         }
         // setIsPropActive(!isPropActive);
 
-        alert(`Property is ${isActive == 1 ? `deactivated` : `activated`}`);
+        handleShow(
+          `Property is successfully ${
+            isActive == 1 ? `deactivated` : `activated`
+          }`
+        );
         isActive = 0;
-        window.location.reload();
       })
       .catch((error) => {
-        alert("error in toggling property");
+        handleShow("error in toggling property");
       });
   };
   return (
@@ -153,6 +164,9 @@ const Card = ({
           )}
         </MDBCardBody>
       </MDBCard>
+
+      {/* Modal message rendering */}
+      <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
     </>
   );
 };
