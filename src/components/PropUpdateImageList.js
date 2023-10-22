@@ -5,7 +5,7 @@ import { Row, Container } from "react-bootstrap";
 import Axios from "axios";
 // import { useNavigate } from "react-router-dom";
 
-function PropUpdateImageList({ pictures, setPictures }) {
+function PropUpdateImageList({ pictures, setPictures, type }) {
   //   const navigate = useNavigate();
   //   const [updatedPictures, setUpdatedPictures] = useState([]);
   // console.log("certificates===", pictures);
@@ -35,7 +35,7 @@ function PropUpdateImageList({ pictures, setPictures }) {
         <hr />
         <Row className="my-3 px-4">
           {" "}
-          <h3> Gallery</h3>
+          {type === "thumbnail" ? <h3> Head Picture</h3> : <h3> Gallery</h3>}
         </Row>
 
         <Row className="justify-content-center">
