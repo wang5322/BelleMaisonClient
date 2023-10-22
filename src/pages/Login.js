@@ -55,14 +55,6 @@ function Login() {
       <div className="centerContainer">
         <h2 className="m-3">Choose a Login Method</h2>
         <div className="wrapper">
-          {/* <div className="formContainer">
-            <label>Username:</label>
-            <input className="inputCreatePost" type="text" onChange={(event) => {setUsername(event.target.value);}}/>
-            <label>Password:</label>
-            <input className="inputCreatePost" type="password" onChange={(event) => { setPassword(event.target.value);}}/>
-
-            <button onClick={login}> Login </button>
-        </div> */}
           <div className="left">
             <a
               href={`${process.env.REACT_APP_HOST_URL}/api/passport/facebook`}

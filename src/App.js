@@ -36,13 +36,6 @@ function App() {
 
   const [cookies, setCookie] = useCookies();
 
-  // useEffect(() => {
-  //   // This effect will run whenever authState changes
-  //   console.log('======authState has changed:==========', authState);
-
-  //   // You can perform actions based on the new authState here
-  // }, [authState]);
-
   useEffect(() => {
     // get token from cookie and set to local storage
     if (cookies.token) { localStorage.setItem("accessToken", cookies.token);}
