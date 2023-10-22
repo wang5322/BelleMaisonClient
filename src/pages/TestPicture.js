@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-// import UploadImage from "../components/UploadImage";
 import GetImageTest from "../components/GetImageTest";
-// import ImageForm from "../components/ImageForm";
+// import originAndThumbResizer from "../helpers/OriginAndThumbResizer";
+import imageFileResizer from "../helpers/ImageFileResizer";
 
 function TestPicture() {
   const [files, setFiles] = useState([]);
@@ -12,15 +12,32 @@ function TestPicture() {
 
   const submit = async (event) => {
     event.preventDefault();
+    const propertyId = 14; //hardcoded for testing
+    const formData = new FormData(); // FormData is needed to send multipart/formDatA
 
-    const formData = new FormData(); // FormData is needed to send multipart/formData
-    files.forEach((file, index) => {
-      formData.append("images", file);
-    });
+    // Resize and append both original and resized files to FormData
+    // for (const file of files) {
+    //   const resizedImage = await originAndThumbResizer(file, 350, 300, 100, 0);
+    //   formData.append("originalImages", resizedImage.original);
+    //   formData.append("resizedImages", resizedImage.resized);
+    //   console.log("=====resizedImage=====", resizedImage);
+    // }
+    for (const file of files) {
+      const resizedImage = await imageFileResizer(file, 350, 300, 100, 0);
+      formData.append("images", resizedImage);
+      console.log("=====resizedImage=====", resizedImage);
+    }
 
-    await axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    formData.append("propertyId", propertyId);
+    console.log("=====formData=====", formData);
+
+    await axios.post(
+      `${process.env.REACT_APP_HOST_URL}/api/pictures/addThumbnail`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
     setFiles([]);
 
     // navigate("/");

@@ -7,17 +7,34 @@ import * as Yup from "yup";
 import UploadPropForm from "../components/UploadPropForm";
 import { useParams } from "react-router-dom";
 import PropUpdateImageList from "../components/PropUpdateImageList";
+import imageFileResizer from "../helpers/ImageFileResizer";
+import ModalMessage from "../components/ModalMessage";
 
 function UpdateProperty() {
   let { id } = useParams();
   const [files, setFiles] = useState([]);
+  const [galleryFiles, setGalleryFiles] = useState([]);
   const [property, setProperty] = useState({});
-  const [pictures, setPictures] = useState([]);
+  // const [pictures, setPictures] = useState([]);
+  const [thumbnail, setThumbnail] = useState([]);
+  const [galleryPics, setGalleryPics] = useState([]);
 
   const fileSelected = (event) => {
     const selectedFiles = Array.from(event.target.files);
     setFiles(selectedFiles);
   };
+
+  const MultipleFileSelected = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setGalleryFiles(selectedFiles);
+  };
+
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
 
   const formik = useFormik({
     initialValues: {
@@ -69,37 +86,65 @@ function UpdateProperty() {
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
+      const galleryFormData = new FormData();
+      //resize to thumbnail
+      for (const file of files) {
+        const resizedImage = await imageFileResizer(file, 450, 400, 100, 0);
+        formData.append("images", resizedImage);
+        console.log("=====resizedImage=====", resizedImage);
+      }
 
-      files.forEach((file) => {
-        formData.append("images", file);
-      });
-      // console.log("button clicked");
-      // console.log("Property values are:", values);
-      // TODO: use update
+      //resize pictures in gallery
+      for (const galleryFile of galleryFiles) {
+        const resizedImage = await imageFileResizer(
+          galleryFile,
+          900,
+          900,
+          100,
+          0
+        );
+        galleryFormData.append("images", resizedImage);
+        console.log("=====resizedImage=====", resizedImage);
+      }
+      console.log("button clicked");
+      console.log("Property values are:", values);
+
       try {
         await Axios.put(
           `${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`,
           values,
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         );
-        if (files) {
+        if (files || galleryFiles) {
           console.log("Property Id is", id);
           const propertyId = id;
           formData.append("propertyId", propertyId);
+          galleryFormData.append("propertyId", propertyId);
 
-          await Axios.post(`${process.env.REACT_APP_HOST_URL}/api/pictures`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
+          await Axios.post(
+            `${process.env.REACT_APP_HOST_URL}/api/pictures/addThumbnail`,
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
 
+          await Axios.post(
+            `${process.env.REACT_APP_HOST_URL}/api/pictures`,
+            galleryFormData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
           setFiles([]);
           window.location.reload();
         }
       } catch (error) {
         if (error.response && error.response.data.message) {
           // TODO: Replace with modal
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert("There is an error occurred while uploading property");
+          handleShow("There is an error occurred while uploading property");
         }
       }
     },
@@ -113,22 +158,29 @@ function UpdateProperty() {
       })
       .catch((error) => {
         if (error.response.data.message) {
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert(`There is an error occured while getting property ${id}`);
+          handleShow(`There is an error occured while getting property ${id}`);
         }
       });
     Axios.get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`, {
       headers: { accessToken: localStorage.getItem("accessToken") },
     })
       .then((response) => {
-        setPictures(response.data);
+        //seperate the thumbnail and original images
+        const thumbnail = response.data.filter((pic) => pic.isThumb === true);
+        const gallery = response.data.filter((pic) => pic.isThumb === false);
+        console.log("=====thumbnail=====", thumbnail);
+        console.log("=====gallery=====", gallery);
+        // setPictures(response.data);
+        setThumbnail(thumbnail);
+        setGalleryPics(gallery);
       })
       .catch((error) => {
         if (error.response.data.message) {
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert(
+          handleShow(
             `There is an error occured while getting pictures for property ${id}`
           );
         }
@@ -149,6 +201,8 @@ function UpdateProperty() {
                   formik={formik}
                   onFileSelected={fileSelected}
                   property={property}
+                  onMultipleFileSelected={MultipleFileSelected}
+                  hasThumbnail={thumbnail.length > 0 ? true : false}
                 ></UploadPropForm>
 
                 <div className="px-2 justify-content-start py-4">
@@ -158,12 +212,23 @@ function UpdateProperty() {
                 </div>
               </Form>
               <PropUpdateImageList
-                pictures={pictures}
-                setPictures={setPictures}
+                pictures={thumbnail}
+                setPictures={setThumbnail}
+                type="thumbnail"
               ></PropUpdateImageList>
+              <div className="mb-5">
+                {" "}
+                <PropUpdateImageList
+                  pictures={galleryPics}
+                  setPictures={setGalleryPics}
+                  type="gallery"
+                ></PropUpdateImageList>
+              </div>
             </Card>
           </Col>
         </Row>
+        {/* Modal message rendering */}
+        <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
       </Container>
     </React.Fragment>
   );

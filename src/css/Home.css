@@ -4,10 +4,10 @@
 }
 
 .mask {
-  height: 300px;
+  height: 400px;
 }
 
-.pagination{
+.pagination {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -26,7 +26,7 @@
   background-color: rgb(64, 83, 148);
 }
 
-.pageBtn{
+.pageBtn {
   width: 30px;
   height: 30px;
   list-style: none;
@@ -39,7 +39,7 @@
   background-color: rgb(64, 83, 148);
 }
 
-.active{
+.active {
   color: white;
   background-color: rgb(14, 51, 172);
 }
@@ -49,17 +49,17 @@
   background-color: rgb(14, 51, 172);
 }
 
-.paginationDisabled:hover{
+.paginationDisabled:hover {
   color: rgb(153, 151, 151);
   background-color: rgb(241, 239, 239);
 }
 
-  .info{
-    margin-left: 145px;
-  }
+.info {
+  margin-left: 145px;
+}
 
-  .sorting{
-    margin-left: 80px;
-    margin-top: 8px;
-    font-size: 25px;
-  }
+.sorting {
+  margin-left: 80px;
+  margin-top: 8px;
+  font-size: 25px;
+}

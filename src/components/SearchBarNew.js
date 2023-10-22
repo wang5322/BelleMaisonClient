@@ -3,6 +3,7 @@ import "../css/SearchBar.css";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from '@mui/icons-material/Close';
 import SearchPanel from "./SearchPanelNew";
+import { Row, Col, Container } from "react-bootstrap";
 
 
 function SearchBar({ placeholder, properties,searchCriteria, handleCityChange ,resetChange, onSearch ,setVisible}) {
@@ -66,27 +67,36 @@ function SearchBar({ placeholder, properties,searchCriteria, handleCityChange ,r
 }
 
   return (
-    <div className="search">
-      <div className="searchInputs">
-        <input
-          id="searchInput"
-          type="text"
-          placeholder={placeholder}
-          onChange={handleFilterCity}
-          onClick={()=>{setIsVisible(false)}}
-          ref={inputRef}
-        ></input>
-          <div className="searchIcon">
-              {/* {inputCity === "" ? ( */}
-              <SearchIcon onClick={()=>{setSearchCity(inputRef.current.value)}} />
-              {/* ) : (
-              <CloseIcon id="clearBtn" onClick={resetSearchCity} />
-            )} */}
-            
-          </div>
+    <Container fluid className="search">
+      <Row className="searchInputs">
+        <Col xs={12} sm={12} md={6} lg={6}>
+            <Row>
+                <Col xs={10} sm={10} md={10} lg={10}>
+                  <input
+                    id="searchInput"
+                    type="text"
+                    placeholder={placeholder}
+                    onChange={handleFilterCity}
+                    onClick={()=>{setIsVisible(false)}}
+                    ref={inputRef}
+                  ></input>
+                </Col>
+                <Col xs={2} sm={2} md={2}  lg={2} className="searchIcon">
+                    {/* {inputCity === "" ? ( */}
+                    <SearchIcon onClick={()=>{setSearchCity(inputRef.current.value)}} />
+                    {/* ) : (
+                    <CloseIcon id="clearBtn" onClick={resetSearchCity} />
+                  )} */}
+                </Col>
+            </Row>
+          </Col>
+          <Col xs={12} sm={12} md={3} lg={2} style={{marginRight:20}}>
           <button className="moreoption" onClick={toggle}>More Option</button>
+          </Col>
+          <Col xs={12} sm={12} md={3}  lg={2}>
           <button className="moreoption" onClick={resetSearch}>Clear Search</button>
-      </div>
+          </Col>
+      </Row>
       {isVisible && <SearchPanel searchCriteria={searchCriteria} onSearch={onSearch} setVisible={setVisible}/>} 
       {filteredData.length !== 0 && !isVisible &&(
         <div className="dataResult">
@@ -99,7 +109,7 @@ function SearchBar({ placeholder, properties,searchCriteria, handleCityChange ,r
           })}
         </div>
       )}
-    </div>
+    </Container>
   );
 }
 

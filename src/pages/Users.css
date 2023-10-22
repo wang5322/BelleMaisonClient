@@ -67,13 +67,14 @@
   margin-right: 10px;
 }
 .wrapper {
-  width: 60%;
+  width: 40%;
   height: 75%;
   -webkit-box-shadow: 0px 5px 33px -21px rgba(66, 68, 90, 1);
   -moz-box-shadow: 0px 5px 33px -21px rgba(66, 68, 90, 1);
   box-shadow: 0px 5px 33px -21px rgba(66, 68, 90, 1);
-  display: flex;
+  display:flex;
   align-items: center;
+  justify-content: center;
   border-radius: 20px;
 }
 @media screen and (max-width: 992px) {
@@ -84,7 +85,7 @@
 
   .wrapper {
     width: 65%;
-    height: 90%;
+    height: 600px;
     flex-direction: column;
   }
 
@@ -154,3 +155,38 @@
 .spanred {
     color: red;
 } 
+
+.otpContainer{
+  display: flex;
+}
+
+.optInfo{
+  font-size: 25px;
+  margin: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.otpContainer input{
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  font-size: 40px;
+  text-align: center;
+}
+
+.otpContainer a{
+
+  margin: 20px;
+  font-size: 40px;
+  text-align: center;
+}
+
+.pasLabel{
+  width: 170px;
+  margin: 20px;
+  font-size: 20px;
+}
+.passBtn{
+  margin: 20px;
+}
