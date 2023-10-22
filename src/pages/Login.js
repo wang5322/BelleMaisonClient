@@ -10,9 +10,9 @@ import "./Users.css";
 function Login() {
   const { authState, setAuthState } = useContext(AuthContext);
   //facebook login
-  const facebook = () => {
-    window.open(`${process.env.REACT_APP_HOST_URL}/auth/facebook`, "_self");
-  };
+  // const facebook = () => {
+  //   window.open(`${process.env.REACT_APP_HOST_URL}/api/passport/facebook`, "_self");
+  // };
 
   const initialValues = {
     email: "",
@@ -64,11 +64,15 @@ function Login() {
             <button onClick={login}> Login </button>
         </div> */}
           <div className="left">
-            <div className="loginButton facebook" onClick={facebook}>
+            <a
+              href={`${process.env.REACT_APP_HOST_URL}/api/passport/facebook`}
+              className="loginButton facebook"
+            >
               <FacebookIcon />
               Facebook
-            </div>
+            </a>
           </div>
+
           <div className="center">
             <div className="line" />
             <div className="or">OR</div>
