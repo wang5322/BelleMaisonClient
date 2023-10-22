@@ -7,6 +7,7 @@ import "../css/main.css";
 import MDBCard from "../components/MDBCard";
 import CertiGallery from "../components/PropUpdateImageList";
 import * as Yup from "yup";
+import ModalMessage from "../components/ModalMessage";
 
 function BrokerProfile() {
   const [brokerId, setBrokerId] = useState("");
@@ -54,6 +55,7 @@ function BrokerProfile() {
       })
         .then((response) => {
           console.log("pictureId", response.data.id);
+          handleShow("Picture successfully uploaded!");
           // window.location.reload();
         })
         .catch((error) => {
@@ -66,7 +68,7 @@ function BrokerProfile() {
           }
         });
       setFiles([]);
-      window.location.reload();
+      // window.location.reload();
     } else {
       console.log("No files selected");
     }
@@ -119,11 +121,13 @@ function BrokerProfile() {
     }
   });
 
-  //Error Modal section
-  const [show, setShow] = useState({ error: "", status: false });
-  const handleClose = () => setShow({ error: "", status: false });
-  const handleShow = (errorMessage) =>
-    setShow({ error: errorMessage, status: true });
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+    window.location.reload();
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
 
   //Profile Modal section
   const [showProfileEdit, setProfileEdit] = useState(false);
@@ -176,12 +180,12 @@ function BrokerProfile() {
         }
       })
       .catch((error) => {
-        alert(error);
-        // if (error.response.data.message) {
-        //   handleShow(error.response.data.message);
-        // } else {
-        //   handleShow("There is an error occured while getting broker info");
-        // }
+        handleShow(error);
+        if (error.response.data.message) {
+          handleShow(error.response.data.message);
+        } else {
+          handleShow("There is an error occured while getting broker info");
+        }
       });
 
     Axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties/byBroker`, {
@@ -195,7 +199,7 @@ function BrokerProfile() {
         }
       })
       .catch((error) => {
-        alert(error);
+        handleShow(error);
       });
   }, []);
 
@@ -230,14 +234,14 @@ function BrokerProfile() {
             headers: { accessToken: localStorage.getItem("accessToken") },
           }
         ).then(() => {
-          alert("profile info updated");
+          handleShow("Profile info successfully updated!");
         });
       } catch (error) {
         if (error.response && error.response.data.message) {
           // TODO: Replace with modal
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert("There is an error occurred while uploading property");
+          handleShow("There is an error occurred while uploading property");
         }
       }
     },
@@ -434,22 +438,8 @@ function BrokerProfile() {
           <hr></hr>
         </Row>
 
-        {/* Modal rendering */}
-        <Modal show={show.status} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Oops!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{show.error}</Modal.Body>
-          <Modal.Footer>
-            <Button
-              className="bluButton"
-              variant="secondary"
-              onClick={handleClose}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {/* Modal message rendering */}
+        <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
 
         {/* Profile Modal rendering */}
         <Modal show={showProfileEdit} onHide={handleProfileClose}>
