@@ -66,7 +66,7 @@ function BrokerProfile() {
           }
         });
       setFiles([]);
-      // window.location.reload();
+      window.location.reload();
     } else {
       console.log("No files selected");
     }
@@ -80,8 +80,7 @@ function BrokerProfile() {
       thumbnailPic.length > 0 ? thumbnailPic[0].imageUrl : null;
     console.log("====thumbnailUrl====", thumbnailUrl);
 
-    if (thumbnailUrl) 
-    {
+    if (thumbnailUrl) {
       return (
         <MDBCard
           key={property.id}
@@ -113,6 +112,7 @@ function BrokerProfile() {
           year_built={property.year_built}
           price={property.price}
           page="broker"
+          isActive={property.isActive}
           features={property.features}
         />
       );
@@ -190,7 +190,9 @@ function BrokerProfile() {
       },
     })
       .then((response) => {
-        setProperties(response.data);
+        if (response.data.length > 0) {
+          setProperties(response.data);
+        }
       })
       .catch((error) => {
         alert(error);
@@ -425,7 +427,9 @@ function BrokerProfile() {
               </div>
             )}
           </div>
-          <div className="card-container">{displayProperties}</div>
+          {properties && properties.length > 0 && (
+            <div className="card-container">{displayProperties}</div>
+          )}
 
           <hr></hr>
         </Row>
