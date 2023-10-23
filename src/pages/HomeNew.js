@@ -92,6 +92,7 @@ function HomeNew() {
       }
     }
     //console.log("before in onSearchabc: searchCriteria",searchCriteria);
+    setCurrentPage(1);
     setSearchString(str);
   }
 
