@@ -226,7 +226,7 @@ function Home() {
               nextLinkClassName={"nextBttn"}
               disabledClassName={"paginationDisabled"}
               activeClassName={"paginationActive"}
-              pageLinkClassName={"pageLink"} //added to modify page link number
+              pageLinkClassName={"pageLink"} 
             />
           </div>
         </div>
