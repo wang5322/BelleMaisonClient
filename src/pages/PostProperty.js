@@ -160,6 +160,7 @@ function PostProperty() {
                   formik={formik}
                   onFileSelected={fileSelected}
                   onMultipleFileSelected={MultipleFileSelected}
+                  hasThumbnail={false}
                 ></UploadPropForm>
                 <div className="px-2 justify-content-start py-4">
                   <Button variant="info" className="col-md-3" type="Submit">
