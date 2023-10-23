@@ -108,7 +108,7 @@ const SingleProperty = () => {
       })
       .then((res) => {
         setCenter(res.results[0].geometry.location);
-        return fromAddress("4330 Sherbrooke St W, Westmount, Quebec H3Z 1E2");
+        return fromAddress("1909 Av. des Canadiens-de-Montréal, Montréal, QC H3B 5E8");
       })
       .then((res) => {
         setDestination(res.results[0].geometry.location);
@@ -232,8 +232,20 @@ const SingleProperty = () => {
           </Row>
         </Row>
 
+        {/* <Row>
+          <Col md={6}>
+            
+          </Col>
+          <Col md={6}>
+            <h2>result</h2>
+          </Col>
+        </Row> */}
+        {/* </Container>
+      <Container className="mt-5 mb-5"> */}
         <Row>
           <Col md={6}>
+            <h2>View on Map</h2>
+            <p>distance to Downtown Montreal: {distance}</p>
             <div
               className="Calculator"
               style={{ maxWidth: 500, margin: "1rem auto" }}
@@ -243,17 +255,6 @@ const SingleProperty = () => {
                 <Calculator />
               </div>
             </div>
-          </Col>
-          <Col md={6}>
-            <h2>result</h2>
-          </Col>
-        </Row>
-        {/* </Container>
-      <Container className="mt-5 mb-5"> */}
-        <Row>
-          <Col md={6}>
-            <h2>View on Map</h2>
-            <p>distance to John Abott College: {distance}</p>
           </Col>
 
           <Col md={6}>

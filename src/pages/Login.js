@@ -91,6 +91,8 @@ function Login() {
         .then(() => navigate("/users/otpInput"))
         .catch(console.log);
       return;
+    }else{
+      setErrorMessage('Please input your email address!');
     }
   }
 

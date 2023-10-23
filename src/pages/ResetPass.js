@@ -31,11 +31,11 @@ export default function ResetPass() {
                 { email: email, password: password },
             )
             .then((response) => {
-                if (response.data.error) {
-                    console.log(response.data.error);
-                } else {
+                if (response.data=='true') {
                     handleShow("Your password succesfully set, you can login now")
-                    navigate("/users/login");
+                    navigate("/login");
+                } else {
+                    handleShow(response.data.error);
                 }
             });
         
@@ -72,24 +72,24 @@ export default function ResetPass() {
                     </div>
                 </div>
             </div>
-            
+            {/* Modal rendering */}
+            <Modal show={show.status} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Oops!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{show.error}</Modal.Body>
+                <Modal.Footer>
+                    <Button
+                    className="bluButton"
+                    variant="secondary"
+                    onClick={handleClose}
+                    >
+                    Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
-        {/* Modal rendering */}
-        <Modal show={show.status} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Oops!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{show.error}</Modal.Body>
-            <Modal.Footer>
-                <Button
-                className="bluButton"
-                variant="secondary"
-                onClick={handleClose}
-                >
-                Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        
     </main>
   );
 }
