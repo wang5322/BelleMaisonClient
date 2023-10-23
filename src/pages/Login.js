@@ -3,7 +3,7 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Modal,Button } from "react-bootstrap";
 import * as Yup from "yup";
-//import FacebookIcon from '@mui/icons-material/Facebook';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import "./Users.css";
@@ -110,9 +110,9 @@ function Login() {
           <div className="center">
             <div className="line" />
             <div className="or">OR</div>
-          </div> */}
-          {/* <div className="right"> */}
-          <div>
+          </div>
+          
+          <div className="right">
             <Formik
               initialValues={initialValues}
               onSubmit={onSubmit}
