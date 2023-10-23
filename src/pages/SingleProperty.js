@@ -20,8 +20,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import { AuthContext } from "../helpers/AuthContext";
 import Calculator from "../components/Calculator";
-import BrokerCard from "../components/BrokerCard";
 import "../Property.css";
+import ModalMessage from "../components/ModalMessage";
 
 const SingleProperty = () => {
   const [pictures, setPictures] = useState([]);
@@ -36,6 +36,14 @@ const SingleProperty = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
 
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+    window.location.reload();
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
+
   // set key for react-geocode
   setKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
@@ -47,11 +55,12 @@ const SingleProperty = () => {
 
   const { id } = useParams();
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_HOST_URL}/api/users/auth`, {
-      headers: {
-        accessToken: localStorage.getItem("accessToken"),
-      },
-    })
+    axios
+      .get(`${process.env.REACT_APP_HOST_URL}/api/users/auth`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
       .then((response) => {
         if (response.data.error) {
           setAuthState({ ...authState, status: false });
@@ -65,28 +74,42 @@ const SingleProperty = () => {
           });
           loggedInUserId = response.data.id;
         }
-        return axios.get(`${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`)
+        return axios.get(
+          `${process.env.REACT_APP_HOST_URL}/api/pictures/byProp/${id}`
+        );
       })
       .then((response) => {
         let tempPictures = [];
-        response.data.forEach((x) => {
+        const galleryPictures = response.data.filter(
+          (x) => x.isThumb === false
+        );
+
+        galleryPictures.forEach((x) => {
           tempPictures.push({
             original: x.imageUrl,
             thumbnail: x.imageUrl,
           });
         });
         setPictures(tempPictures);
-        return axios.get(`${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`)
+        return axios.get(
+          `${process.env.REACT_APP_HOST_URL}/api/properties/byId/${id}`
+        );
       })
       .then((res) => {
         setProperty(res.data);
-        setLiked(res.data.Favorites.some(favorite => favorite.user_id === loggedInUserId));
+        setLiked(
+          res.data.Favorites.some(
+            (favorite) => favorite.user_id === loggedInUserId
+          )
+        );
         const tempAddress = `${res.data.address},${res.data.city}`;
         return fromAddress(tempAddress);
       })
       .then((res) => {
         setCenter(res.results[0].geometry.location);
-        return fromAddress("1909 Av. des Canadiens-de-Montréal, Montréal, QC H3B 5E8");
+        return fromAddress(
+          "1909 Av. des Canadiens-de-Montréal, Montréal, QC H3B 5E8"
+        );
       })
       .then((res) => {
         setDestination(res.results[0].geometry.location);
@@ -98,7 +121,8 @@ const SingleProperty = () => {
 
   const likeAProperty = (property_id) => {
     if (authState.status) {
-      axios.post(
+      axios
+        .post(
           `${process.env.REACT_APP_HOST_URL}/api/favorites`,
           { property_id: property_id },
           { headers: { accessToken: localStorage.getItem("accessToken") } }
@@ -117,7 +141,7 @@ const SingleProperty = () => {
           }
         });
     } else {
-      alert("please login before like");
+      handleShow("Please login before like a property.");
     }
   };
 
@@ -139,25 +163,19 @@ const SingleProperty = () => {
                   <FavoriteIcon
                     onClick={() => {
                       likeAProperty(property.id);
-
                     }}
                     className="likeBttn"
-                  // className={liked ? "likeBttn" : "unlikeBttn"}
-
+                    // className={liked ? "likeBttn" : "unlikeBttn"}
                   />
                 ) : (
                   <FavoriteBorderIcon
                     onClick={() => {
                       likeAProperty(property.id);
-
                     }}
                     className="unlikeBttn"
-                  // className={liked ? "likeBttn" : "unlikeBttn"}
-
+                    // className={liked ? "likeBttn" : "unlikeBttn"}
                   />
-
-                )
-                }
+                )}
                 <span className="price">${property.price}</span>
               </div>
             </div>
@@ -273,6 +291,8 @@ const SingleProperty = () => {
               )}
             </div>
           </Col>
+          {/* Modal message rendering */}
+          <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
         </Row>
       </Container>
     </div>

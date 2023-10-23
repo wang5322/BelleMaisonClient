@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Row, Container } from "react-bootstrap";
 import Axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import ModalMessage from "../components/ModalMessage";
 
 function PropUpdateImageList({ pictures, setPictures, type }) {
+  //Error&Message Modal section
+  const [show, setShow] = useState({ message: "", status: false });
+  const handleClose = () => {
+    setShow({ message: "", status: false });
+    window.location.reload();
+  };
+  const handleShow = (message) => setShow({ message: message, status: true });
+
   //   const navigate = useNavigate();
   //   const [updatedPictures, setUpdatedPictures] = useState([]);
   // console.log("certificates===", pictures);
@@ -23,9 +31,9 @@ function PropUpdateImageList({ pictures, setPictures, type }) {
       .catch((error) => {
         if (error.response && error.response.data.message) {
           // TODO: Replace with modal
-          alert(error.response.data.message);
+          handleShow(error.response.data.message);
         } else {
-          alert("There is an error occurred while uploading property");
+          handleShow("There is an error occurred while uploading property");
         }
       });
   };
@@ -65,6 +73,9 @@ function PropUpdateImageList({ pictures, setPictures, type }) {
               </Card>
             );
           })}
+
+          {/* Modal message rendering */}
+          <ModalMessage show={show} handleClose={handleClose}></ModalMessage>
         </Row>
       </Container>
     </React.Fragment>

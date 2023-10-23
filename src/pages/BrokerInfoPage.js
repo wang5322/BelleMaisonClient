@@ -40,11 +40,6 @@ function BrokerInfoPage() {
       })
       .catch((error) => {
         alert(error);
-        // if (error.response.data.message) {
-        //   handleShow(error.response.data.message);
-        // } else {
-        //   handleShow("There is an error occured while getting broker info");
-        // }
       });
 
     let filteredProperties = [];

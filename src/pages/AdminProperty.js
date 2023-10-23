@@ -81,9 +81,9 @@ function AdminProperty() {
                                 <td>{value.city}</td>
                                 <td>{value.postal}</td>
 
-                                <td>{value.type}</td>
+                <td>{value.type}</td>
 
-                                <td>{value.isActive}</td>
+                <td>{value.isActive}</td>
 
                                 <td>{!value.isActive ? (
                                     <Button
@@ -116,4 +116,4 @@ function AdminProperty() {
     )
 }
 
-export default AdminProperty
+export default AdminProperty;
