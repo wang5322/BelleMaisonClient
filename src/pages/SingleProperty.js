@@ -20,7 +20,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import { AuthContext } from "../helpers/AuthContext";
 import Calculator from "../components/Calculator";
-import BrokerCard from "../components/BrokerCard";
 import "../Property.css";
 import ModalMessage from "../components/ModalMessage";
 
@@ -108,7 +107,9 @@ const SingleProperty = () => {
       })
       .then((res) => {
         setCenter(res.results[0].geometry.location);
-        return fromAddress("1909 Av. des Canadiens-de-Montréal, Montréal, QC H3B 5E8");
+        return fromAddress(
+          "1909 Av. des Canadiens-de-Montréal, Montréal, QC H3B 5E8"
+        );
       })
       .then((res) => {
         setDestination(res.results[0].geometry.location);
