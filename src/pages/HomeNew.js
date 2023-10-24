@@ -5,6 +5,7 @@ import axios from "axios";
 import Card from "../components/MDBCard";
 import Sorting from "../components/Sorting";
 import Pagination from "../components/Pagination";
+import { Modal,Button } from "react-bootstrap";
 
 function HomeNew() {
   //minPrice,maxPrice,propertyType,bedrooms,bathrooms,yearBuilt,
@@ -24,6 +25,14 @@ function HomeNew() {
   //const [result,setResult] = useState(listOfProperties);
   const [searchString, setSearchString] = useState("isActive:1");
   const [totalCount, setTotalCount] = useState(0);
+  
+
+
+  //Error Modal section
+  const [show, setShow] = useState({ error: "", status: false });
+  const handleClose = () => setShow({ error: "", status: false });
+  const handleShow = (errorMessage) =>
+  setShow({ error: errorMessage, status: true });
 
   const articlesPerPage = 8;
 
@@ -40,7 +49,7 @@ function HomeNew() {
       })
       .catch((err) => {
         if (err.response.data.status !== 404) {
-          alert("no records found!");
+          handleShow("no records found!");
           return;
         }
       });
@@ -239,6 +248,22 @@ function HomeNew() {
             />
           </div>
         </div>
+        {/* Modal rendering */}
+        <Modal show={show.status} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Oops!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{show.error}</Modal.Body>
+          <Modal.Footer>
+            <Button
+              className="bluButton"
+              variant="secondary"
+              onClick={handleClose}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </main>
     </>
   );

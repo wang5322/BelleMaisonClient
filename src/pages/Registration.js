@@ -55,11 +55,11 @@ function Registration(){
                 <Form className="formContainer">
                     <label>Email: </label>
                     <ErrorMessage name="email" component="span" className="spanred"/>
-                    <Field className="inputCreatePost" name="email" placeholder="Ex. 123@abc.com"/>
+                    <Field className="inputLoginField" name="email" placeholder="Ex. 123@abc.com"/>
                     
                     <label>password: </label>
                     <ErrorMessage name="password" component="span" className="spanred"/>
-                    <Field className="inputCreatePost" type="password" name="password" placeholder="Your password "/>
+                    <Field className="inputLoginField" type="password" name="password" placeholder="Your password "/>
 
                     <div id="my-radio-group">Register as: </div>
                     <div role="group" aria-labelledby="my-radio-group">

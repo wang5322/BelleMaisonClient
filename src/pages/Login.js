@@ -103,9 +103,9 @@ function Login() {
         <div className="wrapper">
            {/*<div className="formContainer">
             <label>Username:</label>
-            <input className="inputCreatePost" type="text" onChange={(event) => {setUsername(event.target.value);}}/>
+            <input className="inputLoginField" type="text" onChange={(event) => {setUsername(event.target.value);}}/>
             <label>Password:</label>
-            <input className="inputCreatePost" type="password" onChange={(event) => { setPassword(event.target.value);}}/>
+            <input className="inputLoginField" type="password" onChange={(event) => { setPassword(event.target.value);}}/>
 
             <button onClick={login}> Login </button>
         </div> */}
@@ -132,7 +132,7 @@ function Login() {
                     <label>Email: </label>
                     <ErrorMessage name="email" component="span" className="spanred" />
                     <Field
-                      className="inputCreatePost"
+                      className="inputLoginField"
                       name="email"
                       placeholder="Ex. 123@abc.com"
                     />
@@ -144,7 +144,7 @@ function Login() {
                       className="spanred"
                     />
                     <Field
-                      className="inputCreatePost"
+                      className="inputLoginField"
                       type="password"
                       name="password"
                       placeholder="Your password "
