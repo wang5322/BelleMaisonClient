@@ -43,6 +43,7 @@ function App() {
 
   useEffect(() => {
     // get token from cookie and set to local storage
+    console.log("cookie token: ", cookies.token);
     if (cookies.token) { localStorage.setItem("accessToken", cookies.token);}
 
     axios
