@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Switch is replaced by Routes
+import { useCookies } from "react-cookie";
 import TestPicture from "./pages/TestPicture";
 import SingleProperty from "./pages/SingleProperty";
 import Registration from "./pages/Registration";
@@ -38,14 +39,13 @@ function App() {
   const [otp, setOTP] = useState();
   const [email, setEmail] = useState();
 
-  // useEffect(() => {
-  //   // This effect will run whenever authState changes
-  //   console.log('======authState has changed:==========', authState);
-
-  //   // You can perform actions based on the new authState here
-  // }, [authState]);
+  const [cookies, setCookie] = useCookies();
 
   useEffect(() => {
+    // get token from cookie and set to local storage
+    console.log("cookie token: ", cookies.token);
+    if (cookies.token) { localStorage.setItem("accessToken", cookies.token);}
+
     axios
       .get(`${process.env.REACT_APP_HOST_URL}/api/users/auth`, {
         headers: {

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Modal,Button } from "react-bootstrap";
 import * as Yup from "yup";
-//import FacebookIcon from '@mui/icons-material/Facebook';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import "./Users.css";
@@ -12,10 +12,6 @@ import { useState } from "react";
 function Login() {
   const { authState, setAuthState, setOTP, email, setEmail} = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
-  //facebook login
-  // const facebook = () => {
-  //   window.open(`${process.env.REACT_APP_HOST_URL}/auth/facebook`, "_self");
-  // };
 
   const initialValues = {
     email: "",
@@ -101,26 +97,22 @@ function Login() {
       <div className="centerContainer">
         <h2 className="m-3">Please Login</h2> 
         <div className="wrapper">
-           {/*<div className="formContainer">
-            <label>Username:</label>
-            <input className="inputLoginField" type="text" onChange={(event) => {setUsername(event.target.value);}}/>
-            <label>Password:</label>
-            <input className="inputLoginField" type="password" onChange={(event) => { setPassword(event.target.value);}}/>
-
-            <button onClick={login}> Login </button>
-        </div> */}
-          {/* <div className="left">
-            <div className="loginButton facebook" onClick={facebook}>
+          <div className="left">
+            <a
+              href={`${process.env.REACT_APP_HOST_URL}/api/passport/facebook`}
+              className="loginButton facebook"
+            >
               <FacebookIcon />
               Facebook
-            </div>
+            </a>
           </div>
+
           <div className="center">
             <div className="line" />
             <div className="or">OR</div>
-          </div> */}
-          {/* <div className="right"> */}
-          <div>
+          </div>
+          
+          <div className="right">
             <Formik
               initialValues={initialValues}
               onSubmit={onSubmit}
